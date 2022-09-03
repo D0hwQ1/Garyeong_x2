@@ -9,7 +9,7 @@ const TypeMsgSendReport = "send_report"
 
 var _ sdk.Msg = &MsgSendReport{}
 
-func NewMsgSendReport(creator string, target string, link string, description string, tags string) *MsgSendReport {
+func NewMsgSendReport(creator string, target string, link string, description string, tags []string) *MsgSendReport {
 	return &MsgSendReport{
 		Creator:     creator,
 		Target:      target,

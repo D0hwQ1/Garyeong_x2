@@ -3,6 +3,7 @@ package garyeong.garyeong;
 
 import "gogoproto/gogo.proto";
 import "garyeong/params.proto";
+import "garyeong/comment.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "garyeong/x/garyeong/types";
@@ -10,5 +11,7 @@ option go_package = "garyeong/x/garyeong/types";
 // GenesisState defines the garyeong module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Comment commentList = 2 [(gogoproto.nullable) = false];
+  uint64 commentCount = 3;
   // this line is used by starport scaffolding # genesis/proto/state
 }

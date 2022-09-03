@@ -1,70 +1,82 @@
 /* eslint-disable */
-import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
+import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "garyeong.garyeong";
 
-export interface MsgSendReport {
+export interface Report {
+  id: number;
   creator: string;
   target: string;
   link: string;
   description: string;
+  recommend: number;
   tags: string[];
 }
 
-export interface MsgSendReportResponse {
-  id: number;
-}
-
-const baseMsgSendReport: object = {
+const baseReport: object = {
+  id: 0,
   creator: "",
   target: "",
   link: "",
   description: "",
+  recommend: 0,
   tags: "",
 };
 
-export const MsgSendReport = {
-  encode(message: MsgSendReport, writer: Writer = Writer.create()): Writer {
+export const Report = {
+  encode(message: Report, writer: Writer = Writer.create()): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
+      writer.uint32(18).string(message.creator);
     }
     if (message.target !== "") {
-      writer.uint32(18).string(message.target);
+      writer.uint32(26).string(message.target);
     }
     if (message.link !== "") {
-      writer.uint32(26).string(message.link);
+      writer.uint32(34).string(message.link);
     }
     if (message.description !== "") {
-      writer.uint32(34).string(message.description);
+      writer.uint32(42).string(message.description);
+    }
+    if (message.recommend !== 0) {
+      writer.uint32(56).uint64(message.recommend);
     }
     for (const v of message.tags) {
-      writer.uint32(42).string(v!);
+      writer.uint32(50).string(v!);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgSendReport {
+  decode(input: Reader | Uint8Array, length?: number): Report {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+    const message = { ...baseReport } as Report;
     message.tags = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.creator = reader.string();
+          message.id = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.target = reader.string();
+          message.creator = reader.string();
           break;
         case 3:
-          message.link = reader.string();
+          message.target = reader.string();
           break;
         case 4:
-          message.description = reader.string();
+          message.link = reader.string();
           break;
         case 5:
+          message.description = reader.string();
+          break;
+        case 7:
+          message.recommend = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
           message.tags.push(reader.string());
           break;
         default:
@@ -75,9 +87,14 @@ export const MsgSendReport = {
     return message;
   },
 
-  fromJSON(object: any): MsgSendReport {
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+  fromJSON(object: any): Report {
+    const message = { ...baseReport } as Report;
     message.tags = [];
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
     } else {
@@ -98,6 +115,11 @@ export const MsgSendReport = {
     } else {
       message.description = "";
     }
+    if (object.recommend !== undefined && object.recommend !== null) {
+      message.recommend = Number(object.recommend);
+    } else {
+      message.recommend = 0;
+    }
     if (object.tags !== undefined && object.tags !== null) {
       for (const e of object.tags) {
         message.tags.push(String(e));
@@ -106,13 +128,15 @@ export const MsgSendReport = {
     return message;
   },
 
-  toJSON(message: MsgSendReport): unknown {
+  toJSON(message: Report): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     message.creator !== undefined && (obj.creator = message.creator);
     message.target !== undefined && (obj.target = message.target);
     message.link !== undefined && (obj.link = message.link);
     message.description !== undefined &&
       (obj.description = message.description);
+    message.recommend !== undefined && (obj.recommend = message.recommend);
     if (message.tags) {
       obj.tags = message.tags.map((e) => e);
     } else {
@@ -121,9 +145,14 @@ export const MsgSendReport = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgSendReport>): MsgSendReport {
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+  fromPartial(object: DeepPartial<Report>): Report {
+    const message = { ...baseReport } as Report;
     message.tags = [];
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
     } else {
@@ -144,6 +173,11 @@ export const MsgSendReport = {
     } else {
       message.description = "";
     }
+    if (object.recommend !== undefined && object.recommend !== null) {
+      message.recommend = object.recommend;
+    } else {
+      message.recommend = 0;
+    }
     if (object.tags !== undefined && object.tags !== null) {
       for (const e of object.tags) {
         message.tags.push(e);
@@ -152,98 +186,6 @@ export const MsgSendReport = {
     return message;
   },
 };
-
-const baseMsgSendReportResponse: object = { id: 0 };
-
-export const MsgSendReportResponse = {
-  encode(
-    message: MsgSendReportResponse,
-    writer: Writer = Writer.create()
-  ): Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).uint64(message.id);
-    }
-    return writer;
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): MsgSendReportResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input;
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgSendReportResponse {
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
-    if (object.id !== undefined && object.id !== null) {
-      message.id = Number(object.id);
-    } else {
-      message.id = 0;
-    }
-    return message;
-  },
-
-  toJSON(message: MsgSendReportResponse): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<MsgSendReportResponse>
-  ): MsgSendReportResponse {
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
-    if (object.id !== undefined && object.id !== null) {
-      message.id = object.id;
-    } else {
-      message.id = 0;
-    }
-    return message;
-  },
-};
-
-/** Msg defines the Msg service. */
-export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
-  SendReport(request: MsgSendReport): Promise<MsgSendReportResponse>;
-}
-
-export class MsgClientImpl implements Msg {
-  private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
-    this.rpc = rpc;
-  }
-  SendReport(request: MsgSendReport): Promise<MsgSendReportResponse> {
-    const data = MsgSendReport.encode(request).finish();
-    const promise = this.rpc.request(
-      "garyeong.garyeong.Msg",
-      "SendReport",
-      data
-    );
-    return promise.then((data) =>
-      MsgSendReportResponse.decode(new Reader(data))
-    );
-  }
-}
-
-interface Rpc {
-  request(
-    service: string,
-    method: string,
-    data: Uint8Array
-  ): Promise<Uint8Array>;
-}
 
 declare var self: any | undefined;
 declare var window: any | undefined;
