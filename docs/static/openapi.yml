@@ -47178,6 +47178,8 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  garyeong.garyeong.MsgSendReportResponse:
+    type: object
   garyeong.garyeong.Params:
     type: object
     description: Params defines the parameters for the module.
