@@ -1,0 +1,14 @@
+syntax = "proto3";
+package garyeong.garyeong;
+
+import "gogoproto/gogo.proto";
+import "garyeong/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "garyeong/x/garyeong/types";
+
+// GenesisState defines the garyeong module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
