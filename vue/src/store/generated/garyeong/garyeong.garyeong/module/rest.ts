@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type GaryeongMsgSendReportResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

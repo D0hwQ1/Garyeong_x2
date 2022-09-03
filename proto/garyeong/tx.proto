@@ -7,7 +7,20 @@ option go_package = "garyeong/x/garyeong/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc SendReport(MsgSendReport) returns (MsgSendReportResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSendReport {
+  string creator = 1;
+  string target = 2;
+  string link = 3;
+  string description = 4;
+  repeated string tags = 5;
+}
+
+message MsgSendReportResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
