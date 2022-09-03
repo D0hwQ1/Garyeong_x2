@@ -2,6 +2,7 @@ package cli
 
 import (
 	"strconv"
+	"strings"
 
 	"garyeong/x/garyeong/types"
 
@@ -22,7 +23,7 @@ func CmdSendReport() *cobra.Command {
 			argTarget := args[0]
 			argLink := args[1]
 			argDescription := args[2]
-			argTags := args[3]
+			argTags := strings.Split(args[3], ",")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

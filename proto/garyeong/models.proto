@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package garyeong:garyeong;
+package garyeong.garyeong;
 
 option go_package = "garyeong/x/garyeong/types";
 
@@ -10,6 +10,6 @@ message Report {
     string target = 3;
     string link = 4;
     string description = 5;
+    uint64 recommend = 7;
     repeated string tags = 6;
-    uint64 recommend = 8;
 }

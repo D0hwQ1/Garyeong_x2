@@ -9,12 +9,62 @@
  * ---------------------------------------------------------------
  */
 
-export type GaryeongMsgSendReportResponse = object;
+export interface GaryeongComment {
+  /** @format uint64 */
+  id?: string;
+  creator?: string;
+  comment?: string;
+
+  /** @format int32 */
+  createdAt?: number;
+
+  /** @format uint64 */
+  reportId?: string;
+}
+
+export interface GaryeongMsgSendReportResponse {
+  /** @format uint64 */
+  id?: string;
+}
 
 /**
  * Params defines the parameters for the module.
  */
 export type GaryeongParams = object;
+
+export interface GaryeongQueryAllCommentResponse {
+  Comment?: GaryeongComment[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface GaryeongQueryGetCommentResponse {
+  Comment?: GaryeongComment;
+}
+
+export interface GaryeongQueryGetReportsResponse {
+  report?: GaryeongReport[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -22,6 +72,19 @@ export type GaryeongParams = object;
 export interface GaryeongQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: GaryeongParams;
+}
+
+export interface GaryeongReport {
+  /** @format uint64 */
+  id?: string;
+  creator?: string;
+  target?: string;
+  link?: string;
+  description?: string;
+
+  /** @format uint64 */
+  recommend?: string;
+  tags?: string[];
 }
 
 export interface ProtobufAny {
@@ -33,6 +96,69 @@ export interface RpcStatus {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+  /**
+   * key is a value returned in PageResponse.next_key to begin
+   * querying the next page most efficiently. Only one of offset or key
+   * should be set.
+   * @format byte
+   */
+  key?: string;
+
+  /**
+   * offset is a numeric offset that can be used when key is unavailable.
+   * It is less efficient than using key. Only one of offset or key should
+   * be set.
+   * @format uint64
+   */
+  offset?: string;
+
+  /**
+   * limit is the total number of results to be returned in the result page.
+   * If left empty it will default to a value to be set by each app.
+   * @format uint64
+   */
+  limit?: string;
+
+  /**
+   * count_total is set to true  to indicate that the result set should include
+   * a count of the total number of items available for pagination in UIs.
+   * count_total is only respected when offset is used. It is ignored when key
+   * is set.
+   */
+  count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
+}
+
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+  /** @format byte */
+  next_key?: string;
+
+  /** @format uint64 */
+  total?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -227,10 +353,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title garyeong/genesis.proto
+ * @title garyeong/comment.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCommentAll
+   * @summary Queries a list of Comment items.
+   * @request GET:/garyeong/garyeong/comment
+   */
+  queryCommentAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GaryeongQueryAllCommentResponse, RpcStatus>({
+      path: `/garyeong/garyeong/comment`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryComment
+   * @summary Queries a Comment by id.
+   * @request GET:/garyeong/garyeong/comment/{id}
+   */
+  queryComment = (id: string, params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetCommentResponse, RpcStatus>({
+      path: `/garyeong/garyeong/comment/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -243,6 +411,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<GaryeongQueryParamsResponse, RpcStatus>({
       path: `/garyeong/garyeong/params`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetReports
+   * @summary Queries a list of Report items.
+   * @request GET:/garyeong/garyeong/report
+   */
+  queryGetReports = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GaryeongQueryGetReportsResponse, RpcStatus>({
+      path: `/garyeong/garyeong/report`,
+      method: "GET",
+      query: query,
       format: "json",
       ...params,
     });
