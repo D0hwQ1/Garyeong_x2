@@ -68,6 +68,14 @@ export interface QueryGetReportByTargetResponse {
   report: Report[];
 }
 
+export interface QueryGetReportsByTagsRequest {
+  tags: string[];
+}
+
+export interface QueryGetReportsByTagsResponse {
+  report: Report[];
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1076,6 +1084,160 @@ export const QueryGetReportByTargetResponse = {
   },
 };
 
+const baseQueryGetReportsByTagsRequest: object = { tags: "" };
+
+export const QueryGetReportsByTagsRequest = {
+  encode(
+    message: QueryGetReportsByTagsRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.tags) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportsByTagsRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportsByTagsRequest,
+    } as QueryGetReportsByTagsRequest;
+    message.tags = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tags.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetReportsByTagsRequest {
+    const message = {
+      ...baseQueryGetReportsByTagsRequest,
+    } as QueryGetReportsByTagsRequest;
+    message.tags = [];
+    if (object.tags !== undefined && object.tags !== null) {
+      for (const e of object.tags) {
+        message.tags.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetReportsByTagsRequest): unknown {
+    const obj: any = {};
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => e);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetReportsByTagsRequest>
+  ): QueryGetReportsByTagsRequest {
+    const message = {
+      ...baseQueryGetReportsByTagsRequest,
+    } as QueryGetReportsByTagsRequest;
+    message.tags = [];
+    if (object.tags !== undefined && object.tags !== null) {
+      for (const e of object.tags) {
+        message.tags.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseQueryGetReportsByTagsResponse: object = {};
+
+export const QueryGetReportsByTagsResponse = {
+  encode(
+    message: QueryGetReportsByTagsResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.report) {
+      Report.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportsByTagsResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportsByTagsResponse,
+    } as QueryGetReportsByTagsResponse;
+    message.report = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.report.push(Report.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetReportsByTagsResponse {
+    const message = {
+      ...baseQueryGetReportsByTagsResponse,
+    } as QueryGetReportsByTagsResponse;
+    message.report = [];
+    if (object.report !== undefined && object.report !== null) {
+      for (const e of object.report) {
+        message.report.push(Report.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetReportsByTagsResponse): unknown {
+    const obj: any = {};
+    if (message.report) {
+      obj.report = message.report.map((e) =>
+        e ? Report.toJSON(e) : undefined
+      );
+    } else {
+      obj.report = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetReportsByTagsResponse>
+  ): QueryGetReportsByTagsResponse {
+    const message = {
+      ...baseQueryGetReportsByTagsResponse,
+    } as QueryGetReportsByTagsResponse;
+    message.report = [];
+    if (object.report !== undefined && object.report !== null) {
+      for (const e of object.report) {
+        message.report.push(Report.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1104,6 +1266,10 @@ export interface Query {
   GetReportByTarget(
     request: QueryGetReportByTargetRequest
   ): Promise<QueryGetReportByTargetResponse>;
+  /** Queries a list of GetReportsByTags items. */
+  GetReportsByTags(
+    request: QueryGetReportsByTagsRequest
+  ): Promise<QueryGetReportsByTagsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1198,6 +1364,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetReportByTargetResponse.decode(new Reader(data))
+    );
+  }
+
+  GetReportsByTags(
+    request: QueryGetReportsByTagsRequest
+  ): Promise<QueryGetReportsByTagsResponse> {
+    const data = QueryGetReportsByTagsRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetReportsByTags",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetReportsByTagsResponse.decode(new Reader(data))
     );
   }
 }

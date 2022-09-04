@@ -46,6 +46,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_report_by_target/{target}";
 	}
 
+// Queries a list of GetReportsByTags items.
+	rpc GetReportsByTags(QueryGetReportsByTagsRequest) returns (QueryGetReportsByTagsResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_reports_by_tags/{tags}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -105,6 +110,14 @@ message QueryGetReportByTargetRequest {
 }
 
 message QueryGetReportByTargetResponse {
+  repeated Report report = 1;
+}
+
+message QueryGetReportsByTagsRequest {
+  repeated string tags = 1;
+}
+
+message QueryGetReportsByTagsResponse {
   repeated Report report = 1;
 }
 

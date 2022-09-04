@@ -20572,6 +20572,71 @@ paths:
           type: string
       tags:
         - Query
+  '/garyeong/garyeong/get_reports_by_tags/{tags}':
+    get:
+      summary: Queries a list of GetReportsByTags items.
+      operationId: GaryeongGaryeongGetReportsByTags
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              report:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uint64
+                    creator:
+                      type: string
+                    target:
+                      type: string
+                    link:
+                      type: string
+                    description:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    recommend:
+                      type: string
+                      format: uint64
+                    createdAt:
+                      type: string
+                      format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: tags
+          in: path
+          required: true
+          type: array
+          items:
+            type: string
+          collectionFormat: csv
+          minItems: 1
+      tags:
+        - Query
   /garyeong/garyeong/get_reports_count:
     get:
       summary: Queries a list of GetReportsCount items.
@@ -47835,6 +47900,35 @@ definitions:
             type: string
             format: int64
   garyeong.garyeong.QueryGetReportByTargetResponse:
+    type: object
+    properties:
+      report:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uint64
+            creator:
+              type: string
+            target:
+              type: string
+            link:
+              type: string
+            description:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            recommend:
+              type: string
+              format: uint64
+            createdAt:
+              type: string
+              format: int64
+  garyeong.garyeong.QueryGetReportsByTagsResponse:
     type: object
     properties:
       report:

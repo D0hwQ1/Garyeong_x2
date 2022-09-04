@@ -76,6 +76,10 @@ export interface GaryeongQueryGetReportByTargetResponse {
   report?: GaryeongReport[];
 }
 
+export interface GaryeongQueryGetReportsByTagsResponse {
+  report?: GaryeongReport[];
+}
+
 export interface GaryeongQueryGetReportsCountResponse {
   /** @format uint64 */
   count?: string;
@@ -153,6 +157,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -382,6 +393,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -424,6 +436,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -462,6 +475,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryGetReportByTarget = (target: string, params: RequestParams = {}) =>
     this.request<GaryeongQueryGetReportByTargetResponse, RpcStatus>({
       path: `/garyeong/garyeong/get_report_by_target/${target}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetReportsByTags
+   * @summary Queries a list of GetReportsByTags items.
+   * @request GET:/garyeong/garyeong/get_reports_by_tags/{tags}
+   */
+  queryGetReportsByTags = (tags: string[], params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetReportsByTagsResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_reports_by_tags/${tags}`,
       method: "GET",
       format: "json",
       ...params,

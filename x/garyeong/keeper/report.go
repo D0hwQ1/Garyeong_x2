@@ -7,7 +7,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/lithammer/fuzzysearch/fuzzy"
-	"golang.org/x/exp/slices"
 
 	"garyeong/x/garyeong/types"
 )
@@ -88,7 +87,7 @@ func (k Keeper) GetEveryReportByTarget(ctx sdk.Context, target string) ([]*types
 	return result, nil
 }
 
-func (k Keeper) GetEveryReportByTag(ctx sdk.Context, tag string) ([]*types.Report, error) {
+func (k Keeper) GetEveryReportByTags(ctx sdk.Context, tags []string) ([]*types.Report, error) {
 	reports, err := k.GetEveryReport(ctx)
 	if err != nil {
 		return nil, errors.New("internal error")
@@ -96,8 +95,16 @@ func (k Keeper) GetEveryReportByTag(ctx sdk.Context, tag string) ([]*types.Repor
 
 	var result []*types.Report
 	for _, report := range reports {
-		idx := slices.IndexFunc(report.Tags, func(reportTag string) bool { return fuzzy.Match(tag, reportTag) })
-		if idx >= 0 {
+		check := 0
+		for _, reportTag := range report.Tags {
+			for _, tag := range tags {
+				if reportTag == tag {
+					check++
+				}
+			}
+		}
+
+		if check == len(tags) {
 			result = append(result, report)
 		}
 	}
