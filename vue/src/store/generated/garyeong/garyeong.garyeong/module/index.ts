@@ -6,11 +6,13 @@ import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "
 import { Api } from "./rest";
 import { MsgUploadReport } from "./types/garyeong/tx";
 import { MsgCreateComment } from "./types/garyeong/tx";
+import { MsgSetProfile } from "./types/garyeong/tx";
 
 
 const types = [
   ["/garyeong.garyeong.MsgUploadReport", MsgUploadReport],
   ["/garyeong.garyeong.MsgCreateComment", MsgCreateComment],
+  ["/garyeong.garyeong.MsgSetProfile", MsgSetProfile],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,6 +47,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgUploadReport: (data: MsgUploadReport): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgUploadReport", value: MsgUploadReport.fromPartial( data ) }),
     msgCreateComment: (data: MsgCreateComment): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgCreateComment", value: MsgCreateComment.fromPartial( data ) }),
+    msgSetProfile: (data: MsgSetProfile): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgSetProfile", value: MsgSetProfile.fromPartial( data ) }),
     
   };
 };

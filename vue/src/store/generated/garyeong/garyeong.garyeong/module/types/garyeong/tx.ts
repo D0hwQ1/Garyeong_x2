@@ -24,6 +24,14 @@ export interface MsgCreateComment {
 
 export interface MsgCreateCommentResponse {}
 
+export interface MsgSetProfile {
+  creator: string;
+}
+
+export interface MsgSetProfileResponse {
+  id: number;
+}
+
 const baseMsgUploadReport: object = {
   creator: "",
   target: "",
@@ -368,11 +376,127 @@ export const MsgCreateCommentResponse = {
   },
 };
 
+const baseMsgSetProfile: object = { creator: "" };
+
+export const MsgSetProfile = {
+  encode(message: MsgSetProfile, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetProfile {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSetProfile } as MsgSetProfile;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSetProfile {
+    const message = { ...baseMsgSetProfile } as MsgSetProfile;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSetProfile): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSetProfile>): MsgSetProfile {
+    const message = { ...baseMsgSetProfile } as MsgSetProfile;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgSetProfileResponse: object = { id: 0 };
+
+export const MsgSetProfileResponse = {
+  encode(
+    message: MsgSetProfileResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetProfileResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSetProfileResponse } as MsgSetProfileResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSetProfileResponse {
+    const message = { ...baseMsgSetProfileResponse } as MsgSetProfileResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSetProfileResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgSetProfileResponse>
+  ): MsgSetProfileResponse {
+    const message = { ...baseMsgSetProfileResponse } as MsgSetProfileResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   UploadReport(request: MsgUploadReport): Promise<MsgUploadReportResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateComment(request: MsgCreateComment): Promise<MsgCreateCommentResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SetProfile(request: MsgSetProfile): Promise<MsgSetProfileResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -401,6 +525,18 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateCommentResponse.decode(new Reader(data))
+    );
+  }
+
+  SetProfile(request: MsgSetProfile): Promise<MsgSetProfileResponse> {
+    const data = MsgSetProfile.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Msg",
+      "SetProfile",
+      data
+    );
+    return promise.then((data) =>
+      MsgSetProfileResponse.decode(new Reader(data))
     );
   }
 }

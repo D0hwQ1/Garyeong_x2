@@ -3,6 +3,13 @@ package garyeong.garyeong;
 
 option go_package = "garyeong/x/garyeong/types";
 
+message Profile {
+    uint64 id = 1;
+    string address = 2;
+    uint64 Activity = 3;
+    int64 lastActivityAt = 4;
+}
+
 message Report {
     uint64 id = 1;
     string creator = 2;

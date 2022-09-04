@@ -24,6 +24,11 @@ export interface GaryeongComment {
 
 export type GaryeongMsgCreateCommentResponse = object;
 
+export interface GaryeongMsgSetProfileResponse {
+  /** @format uint64 */
+  id?: string;
+}
+
 export interface GaryeongMsgUploadReportResponse {
   /** @format uint64 */
   id?: string;

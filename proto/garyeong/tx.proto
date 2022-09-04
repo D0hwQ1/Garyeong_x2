@@ -9,6 +9,7 @@ option go_package = "garyeong/x/garyeong/types";
 service Msg {
       rpc UploadReport(MsgUploadReport) returns (MsgUploadReportResponse);
   rpc CreateComment(MsgCreateComment) returns (MsgCreateCommentResponse);
+  rpc SetProfile(MsgSetProfile) returns (MsgSetProfileResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -31,6 +32,14 @@ message MsgCreateComment {
 }
 
 message MsgCreateCommentResponse {
+}
+
+message MsgSetProfile {
+  string creator = 1;
+}
+
+message MsgSetProfileResponse {
+  uint64 id = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

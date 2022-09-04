@@ -1,11 +1,12 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Profile } from "./module/types/garyeong/models"
 import { Report } from "./module/types/garyeong/models"
 import { Comment } from "./module/types/garyeong/models"
 import { Params } from "./module/types/garyeong/params"
 
 
-export { Report, Comment, Params };
+export { Profile, Report, Comment, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -53,6 +54,7 @@ const getDefaultState = () => {
 				GetReportsByTags: {},
 				
 				_Structure: {
+						Profile: getStructure(Profile.fromPartial({})),
 						Report: getStructure(Report.fromPartial({})),
 						Comment: getStructure(Comment.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -380,6 +382,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgSetProfile({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSetProfile(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSetProfile:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSetProfile:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgUploadReport({ rootGetters }, { value }) {
 			try {
@@ -404,6 +421,19 @@ export default {
 					throw new Error('TxClient:MsgCreateComment:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateComment:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSetProfile({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSetProfile(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSetProfile:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSetProfile:Create Could not create message: ' + e.message)
 				}
 			}
 		},

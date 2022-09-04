@@ -32,6 +32,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateComment int = 100
 
+	opWeightMsgSetProfile = "op_weight_msg_set_profile"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSetProfile int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -86,6 +90,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateComment,
 		garyeongsimulation.SimulateMsgCreateComment(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSetProfile int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSetProfile, &weightMsgSetProfile, nil,
+		func(_ *rand.Rand) {
+			weightMsgSetProfile = defaultWeightMsgSetProfile
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSetProfile,
+		garyeongsimulation.SimulateMsgSetProfile(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

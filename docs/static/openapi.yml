@@ -20250,16 +20250,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/garyeong/garyeong/get_comment_by_id/{id}':
@@ -20436,16 +20426,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -47744,6 +47724,12 @@ definitions:
         format: int64
   garyeong.garyeong.MsgCreateCommentResponse:
     type: object
+  garyeong.garyeong.MsgSetProfileResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
   garyeong.garyeong.MsgUploadReportResponse:
     type: object
     properties:

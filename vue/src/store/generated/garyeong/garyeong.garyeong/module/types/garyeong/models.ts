@@ -4,6 +4,13 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "garyeong.garyeong";
 
+export interface Profile {
+  id: number;
+  address: string;
+  Activity: number;
+  lastActivityAt: number;
+}
+
 export interface Report {
   id: number;
   creator: string;
@@ -22,6 +29,118 @@ export interface Comment {
   comment: string;
   createdAt: number;
 }
+
+const baseProfile: object = {
+  id: 0,
+  address: "",
+  Activity: 0,
+  lastActivityAt: 0,
+};
+
+export const Profile = {
+  encode(message: Profile, writer: Writer = Writer.create()): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.address !== "") {
+      writer.uint32(18).string(message.address);
+    }
+    if (message.Activity !== 0) {
+      writer.uint32(24).uint64(message.Activity);
+    }
+    if (message.lastActivityAt !== 0) {
+      writer.uint32(32).int64(message.lastActivityAt);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): Profile {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseProfile } as Profile;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 2:
+          message.address = reader.string();
+          break;
+        case 3:
+          message.Activity = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.lastActivityAt = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Profile {
+    const message = { ...baseProfile } as Profile;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    if (object.Activity !== undefined && object.Activity !== null) {
+      message.Activity = Number(object.Activity);
+    } else {
+      message.Activity = 0;
+    }
+    if (object.lastActivityAt !== undefined && object.lastActivityAt !== null) {
+      message.lastActivityAt = Number(object.lastActivityAt);
+    } else {
+      message.lastActivityAt = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: Profile): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.address !== undefined && (obj.address = message.address);
+    message.Activity !== undefined && (obj.Activity = message.Activity);
+    message.lastActivityAt !== undefined &&
+      (obj.lastActivityAt = message.lastActivityAt);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Profile>): Profile {
+    const message = { ...baseProfile } as Profile;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    if (object.Activity !== undefined && object.Activity !== null) {
+      message.Activity = object.Activity;
+    } else {
+      message.Activity = 0;
+    }
+    if (object.lastActivityAt !== undefined && object.lastActivityAt !== null) {
+      message.lastActivityAt = object.lastActivityAt;
+    } else {
+      message.lastActivityAt = 0;
+    }
+    return message;
+  },
+};
 
 const baseReport: object = {
   id: 0,
