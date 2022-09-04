@@ -1,0 +1,54 @@
+syntax = "proto3";
+package garyeong.garyeong;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "garyeong/x/garyeong/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc UploadReport(MsgUploadReport) returns (MsgUploadReportResponse);
+  rpc CreateComment(MsgCreateComment) returns (MsgCreateCommentResponse);
+  rpc SetProfile(MsgSetProfile) returns (MsgSetProfileResponse);
+  rpc SendRecommend(MsgSendRecommend) returns (MsgSendRecommendResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgUploadReport {
+  string creator = 1;
+  string target = 2;
+  string link = 3;
+  string description = 4;
+  repeated string tags = 5;
+}
+
+message MsgUploadReportResponse {
+  uint64 id = 1;
+}
+
+message MsgCreateComment {
+  string creator = 1;
+  uint64 reportId = 2;
+  string comment = 3;
+}
+
+message MsgCreateCommentResponse {
+}
+
+message MsgSetProfile {
+  string creator = 1;
+}
+
+message MsgSetProfileResponse {
+  uint64 id = 1;
+}
+
+message MsgSendRecommend {
+  string creator = 1;
+  uint64 reportId = 2;
+}
+
+message MsgSendRecommendResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

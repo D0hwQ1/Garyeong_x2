@@ -1,0 +1,25 @@
+./garyeongd tx garyeong upload-report ipsi none example "univ,test" --from alice  -y
+./garyeongd tx garyeong upload-report ipsi2 none example "univ,test" --from alice  -y
+./garyeongd tx garyeong upload-report Pjt none example "programer, student" --from alice  -y
+
+./garyeongd tx garyeong create-comment 0 "Hello, World" --from alice -y
+./garyeongd tx garyeong create-comment 0 "World, Hello" --from bob -y
+./garyeongd tx garyeong create-comment 1 "Hello, World2" --from alice  -y
+
+./garyeongd tx garyeong set-profile --from alice -y
+./garyeongd tx garyeong set-profile --from bob -y
+
+./garyeongd tx garyeong send-recommend 0 --from alice -y
+
+
+./garyeongd q garyeong get-all-reports
+./garyeongd q garyeong get-reports-count
+./garyeongd q garyeong get-report-by-id 0
+./garyeongd q garyeong get-report-by-target "Pjt"
+./garyeongd q garyeong get-report-by-tags "univ"
+./garyeongd q garyeong get-comments-by-report-id 0
+./garyeongd q garyeong get-comment-by-id 2
+./garyeongd q garyeong get-profiles
+./garyeongd q garyeong get-profile-count
+./garyeongd q garyeong get-profile-by-id 0
+./garyeongd q garyeong get-profile-by-address _

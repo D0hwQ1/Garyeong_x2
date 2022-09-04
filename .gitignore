@@ -4,5 +4,4 @@ release/
 .idea/
 .vscode/
 .DS_Store
-garyeongd
-blockData
+core/garyeongd

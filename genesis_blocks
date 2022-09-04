@@ -1,5 +1,0 @@
-./garyeongd tx garyeong upload-report ipsi none example "univ,test" --from alice  -y
-./garyeongd tx garyeong create-comment 0 "Hello, World" --from alice -y
-./garyeongd tx garyeong create-comment 0 "World, Hello" --from bob -y
-./garyeongd tx garyeong upload-report ipsi2 none example "univ,test" --from alice  -y
-./garyeongd tx garyeong create-comment 1 "Hello, World2" --from alice  -y
