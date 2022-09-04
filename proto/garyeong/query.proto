@@ -66,6 +66,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_profile_by_id/{id}";
 	}
 
+// Queries a list of GetProfileByAddress items.
+	rpc GetProfileByAddress(QueryGetProfileByAddressRequest) returns (QueryGetProfileByAddressResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_profile_by_address/{address}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -157,6 +162,14 @@ message QueryGetProfileByIdRequest {
 }
 
 message QueryGetProfileByIdResponse {
+  Profile profile = 1;
+}
+
+message QueryGetProfileByAddressRequest {
+  string address = 1;
+}
+
+message QueryGetProfileByAddressResponse {
   Profile profile = 1;
 }
 

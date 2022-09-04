@@ -20431,6 +20431,55 @@ paths:
           type: boolean
       tags:
         - Query
+  '/garyeong/garyeong/get_profile_by_address/{address}':
+    get:
+      summary: Queries a list of GetProfileByAddress items.
+      operationId: GaryeongGaryeongGetProfileByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              profile:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uint64
+                  address:
+                    type: string
+                  Activity:
+                    type: string
+                    format: uint64
+                  lastActivityAt:
+                    type: string
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/garyeong/garyeong/get_profile_by_id/{id}':
     get:
       summary: Queries a list of GetProfileById items.
@@ -48075,6 +48124,23 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  garyeong.garyeong.QueryGetProfileByAddressResponse:
+    type: object
+    properties:
+      profile:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uint64
+          address:
+            type: string
+          Activity:
+            type: string
+            format: uint64
+          lastActivityAt:
+            type: string
+            format: int64
   garyeong.garyeong.QueryGetProfileByIdResponse:
     type: object
     properties:

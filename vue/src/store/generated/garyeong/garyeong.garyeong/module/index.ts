@@ -4,14 +4,14 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgSetProfile } from "./types/garyeong/tx";
 import { MsgUploadReport } from "./types/garyeong/tx";
+import { MsgSetProfile } from "./types/garyeong/tx";
 import { MsgCreateComment } from "./types/garyeong/tx";
 
 
 const types = [
-  ["/garyeong.garyeong.MsgSetProfile", MsgSetProfile],
   ["/garyeong.garyeong.MsgUploadReport", MsgUploadReport],
+  ["/garyeong.garyeong.MsgSetProfile", MsgSetProfile],
   ["/garyeong.garyeong.MsgCreateComment", MsgCreateComment],
   
 ];
@@ -45,8 +45,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgSetProfile: (data: MsgSetProfile): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgSetProfile", value: MsgSetProfile.fromPartial( data ) }),
     msgUploadReport: (data: MsgUploadReport): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgUploadReport", value: MsgUploadReport.fromPartial( data ) }),
+    msgSetProfile: (data: MsgSetProfile): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgSetProfile", value: MsgSetProfile.fromPartial( data ) }),
     msgCreateComment: (data: MsgCreateComment): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgCreateComment", value: MsgCreateComment.fromPartial( data ) }),
     
   };

@@ -99,6 +99,14 @@ export interface QueryGetProfileByIdResponse {
   profile: Profile | undefined;
 }
 
+export interface QueryGetProfileByAddressRequest {
+  address: string;
+}
+
+export interface QueryGetProfileByAddressResponse {
+  profile: Profile | undefined;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1693,6 +1701,147 @@ export const QueryGetProfileByIdResponse = {
   },
 };
 
+const baseQueryGetProfileByAddressRequest: object = { address: "" };
+
+export const QueryGetProfileByAddressRequest = {
+  encode(
+    message: QueryGetProfileByAddressRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfileByAddressRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfileByAddressRequest,
+    } as QueryGetProfileByAddressRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfileByAddressRequest {
+    const message = {
+      ...baseQueryGetProfileByAddressRequest,
+    } as QueryGetProfileByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfileByAddressRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfileByAddressRequest>
+  ): QueryGetProfileByAddressRequest {
+    const message = {
+      ...baseQueryGetProfileByAddressRequest,
+    } as QueryGetProfileByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetProfileByAddressResponse: object = {};
+
+export const QueryGetProfileByAddressResponse = {
+  encode(
+    message: QueryGetProfileByAddressResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.profile !== undefined) {
+      Profile.encode(message.profile, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfileByAddressResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfileByAddressResponse,
+    } as QueryGetProfileByAddressResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.profile = Profile.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfileByAddressResponse {
+    const message = {
+      ...baseQueryGetProfileByAddressResponse,
+    } as QueryGetProfileByAddressResponse;
+    if (object.profile !== undefined && object.profile !== null) {
+      message.profile = Profile.fromJSON(object.profile);
+    } else {
+      message.profile = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfileByAddressResponse): unknown {
+    const obj: any = {};
+    message.profile !== undefined &&
+      (obj.profile = message.profile
+        ? Profile.toJSON(message.profile)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfileByAddressResponse>
+  ): QueryGetProfileByAddressResponse {
+    const message = {
+      ...baseQueryGetProfileByAddressResponse,
+    } as QueryGetProfileByAddressResponse;
+    if (object.profile !== undefined && object.profile !== null) {
+      message.profile = Profile.fromPartial(object.profile);
+    } else {
+      message.profile = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1737,6 +1886,10 @@ export interface Query {
   GetProfileById(
     request: QueryGetProfileByIdRequest
   ): Promise<QueryGetProfileByIdResponse>;
+  /** Queries a list of GetProfileByAddress items. */
+  GetProfileByAddress(
+    request: QueryGetProfileByAddressRequest
+  ): Promise<QueryGetProfileByAddressResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1887,6 +2040,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetProfileByIdResponse.decode(new Reader(data))
+    );
+  }
+
+  GetProfileByAddress(
+    request: QueryGetProfileByAddressRequest
+  ): Promise<QueryGetProfileByAddressResponse> {
+    const data = QueryGetProfileByAddressRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetProfileByAddress",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetProfileByAddressResponse.decode(new Reader(data))
     );
   }
 }
