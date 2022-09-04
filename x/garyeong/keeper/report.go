@@ -72,7 +72,7 @@ func (k Keeper) GetSingleReport(ctx sdk.Context, id uint64) (*types.Report, erro
 	return report, nil
 }
 
-func (k Keeper) GetEveryReportByNameSubstring(ctx sdk.Context, target string) ([]*types.Report, error) {
+func (k Keeper) GetEveryReportByTarget(ctx sdk.Context, target string) ([]*types.Report, error) {
 	reports, err := k.GetEveryReport(ctx)
 	if err != nil {
 		return nil, errors.New("internal error")

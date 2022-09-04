@@ -49,6 +49,7 @@ const getDefaultState = () => {
 				GetCommentById: {},
 				GetReportsCount: {},
 				GetReportById: {},
+				GetReportByTarget: {},
 				
 				_Structure: {
 						Report: getStructure(Report.fromPartial({})),
@@ -117,6 +118,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.GetReportById[JSON.stringify(params)] ?? {}
+		},
+				getGetReportByTarget: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.GetReportByTarget[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -287,6 +294,28 @@ export default {
 				return getters['getGetReportById']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryGetReportById API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryGetReportByTarget({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGetReportByTarget( key.target)).data
+				
+					
+				commit('QUERY', { query: 'GetReportByTarget', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetReportByTarget', payload: { options: { all }, params: {...key},query }})
+				return getters['getGetReportByTarget']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryGetReportByTarget API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

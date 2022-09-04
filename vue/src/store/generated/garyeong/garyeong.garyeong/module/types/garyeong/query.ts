@@ -60,6 +60,14 @@ export interface QueryGetReportByIdResponse {
   report: Report | undefined;
 }
 
+export interface QueryGetReportByTargetRequest {
+  target: string;
+}
+
+export interface QueryGetReportByTargetResponse {
+  report: Report[];
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -921,6 +929,153 @@ export const QueryGetReportByIdResponse = {
   },
 };
 
+const baseQueryGetReportByTargetRequest: object = { target: "" };
+
+export const QueryGetReportByTargetRequest = {
+  encode(
+    message: QueryGetReportByTargetRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportByTargetRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportByTargetRequest,
+    } as QueryGetReportByTargetRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetReportByTargetRequest {
+    const message = {
+      ...baseQueryGetReportByTargetRequest,
+    } as QueryGetReportByTargetRequest;
+    if (object.target !== undefined && object.target !== null) {
+      message.target = String(object.target);
+    } else {
+      message.target = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetReportByTargetRequest): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetReportByTargetRequest>
+  ): QueryGetReportByTargetRequest {
+    const message = {
+      ...baseQueryGetReportByTargetRequest,
+    } as QueryGetReportByTargetRequest;
+    if (object.target !== undefined && object.target !== null) {
+      message.target = object.target;
+    } else {
+      message.target = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetReportByTargetResponse: object = {};
+
+export const QueryGetReportByTargetResponse = {
+  encode(
+    message: QueryGetReportByTargetResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.report) {
+      Report.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportByTargetResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportByTargetResponse,
+    } as QueryGetReportByTargetResponse;
+    message.report = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.report.push(Report.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetReportByTargetResponse {
+    const message = {
+      ...baseQueryGetReportByTargetResponse,
+    } as QueryGetReportByTargetResponse;
+    message.report = [];
+    if (object.report !== undefined && object.report !== null) {
+      for (const e of object.report) {
+        message.report.push(Report.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetReportByTargetResponse): unknown {
+    const obj: any = {};
+    if (message.report) {
+      obj.report = message.report.map((e) =>
+        e ? Report.toJSON(e) : undefined
+      );
+    } else {
+      obj.report = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetReportByTargetResponse>
+  ): QueryGetReportByTargetResponse {
+    const message = {
+      ...baseQueryGetReportByTargetResponse,
+    } as QueryGetReportByTargetResponse;
+    message.report = [];
+    if (object.report !== undefined && object.report !== null) {
+      for (const e of object.report) {
+        message.report.push(Report.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -945,6 +1100,10 @@ export interface Query {
   GetReportById(
     request: QueryGetReportByIdRequest
   ): Promise<QueryGetReportByIdResponse>;
+  /** Queries a list of GetReportByTarget items. */
+  GetReportByTarget(
+    request: QueryGetReportByTargetRequest
+  ): Promise<QueryGetReportByTargetResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1025,6 +1184,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetReportByIdResponse.decode(new Reader(data))
+    );
+  }
+
+  GetReportByTarget(
+    request: QueryGetReportByTargetRequest
+  ): Promise<QueryGetReportByTargetResponse> {
+    const data = QueryGetReportByTargetRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetReportByTarget",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetReportByTargetResponse.decode(new Reader(data))
     );
   }
 }

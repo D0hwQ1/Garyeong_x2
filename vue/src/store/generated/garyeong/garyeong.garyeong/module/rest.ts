@@ -72,6 +72,10 @@ export interface GaryeongQueryGetReportByIdResponse {
   report?: GaryeongReport;
 }
 
+export interface GaryeongQueryGetReportByTargetResponse {
+  report?: GaryeongReport[];
+}
+
 export interface GaryeongQueryGetReportsCountResponse {
   /** @format uint64 */
   count?: string;
@@ -442,6 +446,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryGetReportById = (id: string, params: RequestParams = {}) =>
     this.request<GaryeongQueryGetReportByIdResponse, RpcStatus>({
       path: `/garyeong/garyeong/get_report_by_id/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetReportByTarget
+   * @summary Queries a list of GetReportByTarget items.
+   * @request GET:/garyeong/garyeong/get_report_by_target/{target}
+   */
+  queryGetReportByTarget = (target: string, params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetReportByTargetResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_report_by_target/${target}`,
       method: "GET",
       format: "json",
       ...params,
