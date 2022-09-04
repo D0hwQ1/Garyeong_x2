@@ -39,7 +39,9 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdGetReportsByTags())
 
-	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdGetProfiles())
+
+// this line is used by starport scaffolding # 1
 
 	return cmd
 }

@@ -6,7 +6,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
-import { Report, Comment } from "../garyeong/models";
+import { Report, Comment, Profile } from "../garyeong/models";
 
 export const protobufPackage = "garyeong.garyeong";
 
@@ -74,6 +74,15 @@ export interface QueryGetReportsByTagsRequest {
 
 export interface QueryGetReportsByTagsResponse {
   report: Report[];
+}
+
+export interface QueryGetProfilesRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryGetProfilesResponse {
+  profiles: Profile[];
+  pagination: PageResponse | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -1238,6 +1247,176 @@ export const QueryGetReportsByTagsResponse = {
   },
 };
 
+const baseQueryGetProfilesRequest: object = {};
+
+export const QueryGetProfilesRequest = {
+  encode(
+    message: QueryGetProfilesRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetProfilesRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfilesRequest,
+    } as QueryGetProfilesRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfilesRequest {
+    const message = {
+      ...baseQueryGetProfilesRequest,
+    } as QueryGetProfilesRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfilesRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfilesRequest>
+  ): QueryGetProfilesRequest {
+    const message = {
+      ...baseQueryGetProfilesRequest,
+    } as QueryGetProfilesRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetProfilesResponse: object = {};
+
+export const QueryGetProfilesResponse = {
+  encode(
+    message: QueryGetProfilesResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.profiles) {
+      Profile.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfilesResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfilesResponse,
+    } as QueryGetProfilesResponse;
+    message.profiles = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.profiles.push(Profile.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfilesResponse {
+    const message = {
+      ...baseQueryGetProfilesResponse,
+    } as QueryGetProfilesResponse;
+    message.profiles = [];
+    if (object.profiles !== undefined && object.profiles !== null) {
+      for (const e of object.profiles) {
+        message.profiles.push(Profile.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfilesResponse): unknown {
+    const obj: any = {};
+    if (message.profiles) {
+      obj.profiles = message.profiles.map((e) =>
+        e ? Profile.toJSON(e) : undefined
+      );
+    } else {
+      obj.profiles = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfilesResponse>
+  ): QueryGetProfilesResponse {
+    const message = {
+      ...baseQueryGetProfilesResponse,
+    } as QueryGetProfilesResponse;
+    message.profiles = [];
+    if (object.profiles !== undefined && object.profiles !== null) {
+      for (const e of object.profiles) {
+        message.profiles.push(Profile.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1270,6 +1449,10 @@ export interface Query {
   GetReportsByTags(
     request: QueryGetReportsByTagsRequest
   ): Promise<QueryGetReportsByTagsResponse>;
+  /** Queries a list of GetProfiles items. */
+  GetProfiles(
+    request: QueryGetProfilesRequest
+  ): Promise<QueryGetProfilesResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1378,6 +1561,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetReportsByTagsResponse.decode(new Reader(data))
+    );
+  }
+
+  GetProfiles(
+    request: QueryGetProfilesRequest
+  ): Promise<QueryGetProfilesResponse> {
+    const data = QueryGetProfilesRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetProfiles",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetProfilesResponse.decode(new Reader(data))
     );
   }
 }

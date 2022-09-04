@@ -51,6 +51,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_reports_by_tags/{tags}";
 	}
 
+// Queries a list of GetProfiles items.
+	rpc GetProfiles(QueryGetProfilesRequest) returns (QueryGetProfilesResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_profiles";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -119,6 +124,15 @@ message QueryGetReportsByTagsRequest {
 
 message QueryGetReportsByTagsResponse {
   repeated Report report = 1;
+}
+
+message QueryGetProfilesRequest {
+cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryGetProfilesResponse {
+  repeated Profile profiles = 1;
+cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
