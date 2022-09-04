@@ -36,6 +36,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_reports_count";
 	}
 
+// Queries a list of GetReportById items.
+	rpc GetReportById(QueryGetReportByIdRequest) returns (QueryGetReportByIdResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_report_by_id/{id}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -80,6 +85,14 @@ message QueryGetReportsCountRequest {
 
 message QueryGetReportsCountResponse {
   uint64 count = 1;
+}
+
+message QueryGetReportByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryGetReportByIdResponse {
+  Report report = 1;
 }
 
 // this line is used by starport scaffolding # 3
