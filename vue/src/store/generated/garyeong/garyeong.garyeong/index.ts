@@ -1,10 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Report } from "./module/types/garyeong/models"
+import { Comment } from "./module/types/garyeong/models"
 import { Params } from "./module/types/garyeong/params"
 
 
-export { Report, Params };
+export { Report, Comment, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -44,9 +45,12 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				GetAllReports: {},
+				GetCommentsByReportId: {},
+				GetCommentById: {},
 				
 				_Structure: {
 						Report: getStructure(Report.fromPartial({})),
+						Comment: getStructure(Comment.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -87,6 +91,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.GetAllReports[JSON.stringify(params)] ?? {}
+		},
+				getGetCommentsByReportId: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.GetCommentsByReportId[JSON.stringify(params)] ?? {}
+		},
+				getGetCommentById: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.GetCommentById[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -170,6 +186,54 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryGetCommentsByReportId({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGetCommentsByReportId( key.reportId, query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryGetCommentsByReportId( key.reportId, {...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'GetCommentsByReportId', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetCommentsByReportId', payload: { options: { all }, params: {...key},query }})
+				return getters['getGetCommentsByReportId']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryGetCommentsByReportId API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryGetCommentById({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGetCommentById( key.id)).data
+				
+					
+				commit('QUERY', { query: 'GetCommentById', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetCommentById', payload: { options: { all }, params: {...key},query }})
+				return getters['getGetCommentById']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryGetCommentById API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgUploadReport({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -185,6 +249,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgCreateComment({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateComment(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateComment:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateComment:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgUploadReport({ rootGetters }, { value }) {
 			try {
@@ -196,6 +275,19 @@ export default {
 					throw new Error('TxClient:MsgUploadReport:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgUploadReport:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateComment({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateComment(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateComment:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateComment:Create Could not create message: ' + e.message)
 				}
 			}
 		},

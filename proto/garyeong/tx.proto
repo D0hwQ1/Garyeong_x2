@@ -8,6 +8,7 @@ option go_package = "garyeong/x/garyeong/types";
 // Msg defines the Msg service.
 service Msg {
       rpc UploadReport(MsgUploadReport) returns (MsgUploadReportResponse);
+  rpc CreateComment(MsgCreateComment) returns (MsgCreateCommentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -21,6 +22,15 @@ message MsgUploadReport {
 
 message MsgUploadReportResponse {
   uint64 id = 1;
+}
+
+message MsgCreateComment {
+  string creator = 1;
+  uint64 reportId = 2;
+  string comment = 3;
+}
+
+message MsgCreateCommentResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

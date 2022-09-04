@@ -13,3 +13,11 @@ message Report {
     uint64 recommend = 7;
     int64 createdAt = 8;
 }
+
+message Comment {
+    uint64 id = 1;
+    string creator = 2;
+    uint64 reportId = 3;
+    string comment = 4;
+    int64 createdAt = 5;
+}

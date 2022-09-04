@@ -21,6 +21,16 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_all_reports";
 	}
 
+// Queries a list of GetCommentsByReportId items.
+	rpc GetCommentsByReportId(QueryGetCommentsByReportIdRequest) returns (QueryGetCommentsByReportIdResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_comments_by_report_id/{reportId}";
+	}
+
+// Queries a list of GetCommentById items.
+	rpc GetCommentById(QueryGetCommentByIdRequest) returns (QueryGetCommentByIdResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_comment_by_id/{id}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -40,6 +50,24 @@ message QueryGetAllReportsRequest {
 message QueryGetAllReportsResponse {
   repeated Report reports = 1;
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCommentsByReportIdRequest {
+  uint64 reportId = 1;
+cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryGetCommentsByReportIdResponse {
+  repeated Comment comments = 1;
+cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCommentByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryGetCommentByIdResponse {
+  Comment comment = 1;
 }
 
 // this line is used by starport scaffolding # 3

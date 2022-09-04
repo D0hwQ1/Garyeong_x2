@@ -18,6 +18,9 @@ const (
 
 	ReportKey      = "Report-value-"
 	ReportCountKey = "Report-count-"
+
+	CommentKey      = "Comment-value-"
+	CommentCountKey = "Comment-count-"
 )
 
 func KeyPrefix(p string) []byte {

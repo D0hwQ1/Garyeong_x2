@@ -15,6 +15,14 @@ export interface Report {
   createdAt: number;
 }
 
+export interface Comment {
+  id: number;
+  creator: string;
+  reportId: number;
+  comment: string;
+  createdAt: number;
+}
+
 const baseReport: object = {
   id: 0,
   creator: "",
@@ -196,6 +204,135 @@ export const Report = {
       message.recommend = object.recommend;
     } else {
       message.recommend = 0;
+    }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = object.createdAt;
+    } else {
+      message.createdAt = 0;
+    }
+    return message;
+  },
+};
+
+const baseComment: object = {
+  id: 0,
+  creator: "",
+  reportId: 0,
+  comment: "",
+  createdAt: 0,
+};
+
+export const Comment = {
+  encode(message: Comment, writer: Writer = Writer.create()): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+    if (message.reportId !== 0) {
+      writer.uint32(24).uint64(message.reportId);
+    }
+    if (message.comment !== "") {
+      writer.uint32(34).string(message.comment);
+    }
+    if (message.createdAt !== 0) {
+      writer.uint32(40).int64(message.createdAt);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): Comment {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseComment } as Comment;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        case 3:
+          message.reportId = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.comment = reader.string();
+          break;
+        case 5:
+          message.createdAt = longToNumber(reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Comment {
+    const message = { ...baseComment } as Comment;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.reportId !== undefined && object.reportId !== null) {
+      message.reportId = Number(object.reportId);
+    } else {
+      message.reportId = 0;
+    }
+    if (object.comment !== undefined && object.comment !== null) {
+      message.comment = String(object.comment);
+    } else {
+      message.comment = "";
+    }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = Number(object.createdAt);
+    } else {
+      message.createdAt = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: Comment): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.reportId !== undefined && (obj.reportId = message.reportId);
+    message.comment !== undefined && (obj.comment = message.comment);
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Comment>): Comment {
+    const message = { ...baseComment } as Comment;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.reportId !== undefined && object.reportId !== null) {
+      message.reportId = object.reportId;
+    } else {
+      message.reportId = 0;
+    }
+    if (object.comment !== undefined && object.comment !== null) {
+      message.comment = object.comment;
+    } else {
+      message.comment = "";
     }
     if (object.createdAt !== undefined && object.createdAt !== null) {
       message.createdAt = object.createdAt;

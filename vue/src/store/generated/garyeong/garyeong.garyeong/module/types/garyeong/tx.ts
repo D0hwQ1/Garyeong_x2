@@ -16,6 +16,14 @@ export interface MsgUploadReportResponse {
   id: number;
 }
 
+export interface MsgCreateComment {
+  creator: string;
+  reportId: number;
+  comment: string;
+}
+
+export interface MsgCreateCommentResponse {}
+
 const baseMsgUploadReport: object = {
   creator: "",
   target: "",
@@ -219,10 +227,152 @@ export const MsgUploadReportResponse = {
   },
 };
 
+const baseMsgCreateComment: object = { creator: "", reportId: 0, comment: "" };
+
+export const MsgCreateComment = {
+  encode(message: MsgCreateComment, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.reportId !== 0) {
+      writer.uint32(16).uint64(message.reportId);
+    }
+    if (message.comment !== "") {
+      writer.uint32(26).string(message.comment);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgCreateComment {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgCreateComment } as MsgCreateComment;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.reportId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.comment = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateComment {
+    const message = { ...baseMsgCreateComment } as MsgCreateComment;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.reportId !== undefined && object.reportId !== null) {
+      message.reportId = Number(object.reportId);
+    } else {
+      message.reportId = 0;
+    }
+    if (object.comment !== undefined && object.comment !== null) {
+      message.comment = String(object.comment);
+    } else {
+      message.comment = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateComment): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.reportId !== undefined && (obj.reportId = message.reportId);
+    message.comment !== undefined && (obj.comment = message.comment);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgCreateComment>): MsgCreateComment {
+    const message = { ...baseMsgCreateComment } as MsgCreateComment;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.reportId !== undefined && object.reportId !== null) {
+      message.reportId = object.reportId;
+    } else {
+      message.reportId = 0;
+    }
+    if (object.comment !== undefined && object.comment !== null) {
+      message.comment = object.comment;
+    } else {
+      message.comment = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateCommentResponse: object = {};
+
+export const MsgCreateCommentResponse = {
+  encode(
+    _: MsgCreateCommentResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateCommentResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateCommentResponse,
+    } as MsgCreateCommentResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateCommentResponse {
+    const message = {
+      ...baseMsgCreateCommentResponse,
+    } as MsgCreateCommentResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateCommentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateCommentResponse>
+  ): MsgCreateCommentResponse {
+    const message = {
+      ...baseMsgCreateCommentResponse,
+    } as MsgCreateCommentResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UploadReport(request: MsgUploadReport): Promise<MsgUploadReportResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateComment(request: MsgCreateComment): Promise<MsgCreateCommentResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -239,6 +389,18 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgUploadReportResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateComment(request: MsgCreateComment): Promise<MsgCreateCommentResponse> {
+    const data = MsgCreateComment.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Msg",
+      "CreateComment",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateCommentResponse.decode(new Reader(data))
     );
   }
 }

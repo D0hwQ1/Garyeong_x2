@@ -9,6 +9,21 @@
  * ---------------------------------------------------------------
  */
 
+export interface GaryeongComment {
+  /** @format uint64 */
+  id?: string;
+  creator?: string;
+
+  /** @format uint64 */
+  reportId?: string;
+  comment?: string;
+
+  /** @format int64 */
+  createdAt?: string;
+}
+
+export type GaryeongMsgCreateCommentResponse = object;
+
 export interface GaryeongMsgUploadReportResponse {
   /** @format uint64 */
   id?: string;
@@ -21,6 +36,25 @@ export type GaryeongParams = object;
 
 export interface GaryeongQueryGetAllReportsResponse {
   reports?: GaryeongReport[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface GaryeongQueryGetCommentByIdResponse {
+  comment?: GaryeongComment;
+}
+
+export interface GaryeongQueryGetCommentsByReportIdResponse {
+  comments?: GaryeongComment[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -340,6 +374,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<GaryeongQueryGetAllReportsResponse, RpcStatus>({
       path: `/garyeong/garyeong/get_all_reports`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetCommentById
+   * @summary Queries a list of GetCommentById items.
+   * @request GET:/garyeong/garyeong/get_comment_by_id/{id}
+   */
+  queryGetCommentById = (id: string, params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetCommentByIdResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_comment_by_id/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetCommentsByReportId
+   * @summary Queries a list of GetCommentsByReportId items.
+   * @request GET:/garyeong/garyeong/get_comments_by_report_id/{reportId}
+   */
+  queryGetCommentsByReportId = (
+    reportId: string,
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GaryeongQueryGetCommentsByReportIdResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_comments_by_report_id/${reportId}`,
       method: "GET",
       query: query,
       format: "json",
