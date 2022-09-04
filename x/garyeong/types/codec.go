@@ -8,13 +8,13 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgSendReport{}, "garyeong/SendReport", nil)
+	cdc.RegisterConcrete(&MsgUploadReport{}, "garyeong/UploadReport", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSendReport{},
+		&MsgUploadReport{},
 	)
 	// this line is used by starport scaffolding # 3
 

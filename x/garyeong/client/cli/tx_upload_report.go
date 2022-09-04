@@ -2,22 +2,21 @@ package cli
 
 import (
 	"strconv"
-	"strings"
 
 	"garyeong/x/garyeong/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdSendReport() *cobra.Command {
+func CmdUploadReport() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-report [target] [link] [description] [tags]",
-		Short: "Broadcast message sendReport",
+		Use:   "upload-report [target] [link] [description] [tags]",
+		Short: "Broadcast message upload-report",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argTarget := args[0]
@@ -30,7 +29,7 @@ func CmdSendReport() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSendReport(
+			msg := types.NewMsgUploadReport(
 				clientCtx.GetFromAddress().String(),
 				argTarget,
 				argLink,

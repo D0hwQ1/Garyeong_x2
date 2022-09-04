@@ -2,13 +2,13 @@ package keeper
 
 import (
 	"context"
+	"time"
 
 	"garyeong/x/garyeong/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) SendReport(goCtx context.Context, msg *types.MsgSendReport) (*types.MsgSendReportResponse, error) {
+func (k msgServer) UploadReport(goCtx context.Context, msg *types.MsgUploadReport) (*types.MsgUploadReportResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var report = types.Report{
@@ -16,10 +16,12 @@ func (k msgServer) SendReport(goCtx context.Context, msg *types.MsgSendReport) (
 		Target:      msg.Target,
 		Link:        msg.Link,
 		Description: msg.Description,
-		Tags:        make([]string, 0),
+		Tags:        msg.Tags,
+		Recommend:   0,
+		CreatedAt:   time.Now().UnixMilli(),
 	}
 
 	id := k.AddReport(ctx, report)
 
-	return &types.MsgSendReportResponse{Id: id}, nil
+	return &types.MsgUploadReportResponse{Id: id}, nil
 }

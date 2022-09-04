@@ -27,7 +27,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgSendReport struct {
+type MsgUploadReport struct {
 	Creator     string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Target      string   `protobuf:"bytes,2,opt,name=target,proto3" json:"target,omitempty"`
 	Link        string   `protobuf:"bytes,3,opt,name=link,proto3" json:"link,omitempty"`
@@ -35,18 +35,18 @@ type MsgSendReport struct {
 	Tags        []string `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
 }
 
-func (m *MsgSendReport) Reset()         { *m = MsgSendReport{} }
-func (m *MsgSendReport) String() string { return proto.CompactTextString(m) }
-func (*MsgSendReport) ProtoMessage()    {}
-func (*MsgSendReport) Descriptor() ([]byte, []int) {
+func (m *MsgUploadReport) Reset()         { *m = MsgUploadReport{} }
+func (m *MsgUploadReport) String() string { return proto.CompactTextString(m) }
+func (*MsgUploadReport) ProtoMessage()    {}
+func (*MsgUploadReport) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5074ff8a8990b5bf, []int{0}
 }
-func (m *MsgSendReport) XXX_Unmarshal(b []byte) error {
+func (m *MsgUploadReport) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSendReport) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUploadReport) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSendReport.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUploadReport.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -56,69 +56,69 @@ func (m *MsgSendReport) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *MsgSendReport) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendReport.Merge(m, src)
+func (m *MsgUploadReport) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUploadReport.Merge(m, src)
 }
-func (m *MsgSendReport) XXX_Size() int {
+func (m *MsgUploadReport) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSendReport) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendReport.DiscardUnknown(m)
+func (m *MsgUploadReport) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUploadReport.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSendReport proto.InternalMessageInfo
+var xxx_messageInfo_MsgUploadReport proto.InternalMessageInfo
 
-func (m *MsgSendReport) GetCreator() string {
+func (m *MsgUploadReport) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgSendReport) GetTarget() string {
+func (m *MsgUploadReport) GetTarget() string {
 	if m != nil {
 		return m.Target
 	}
 	return ""
 }
 
-func (m *MsgSendReport) GetLink() string {
+func (m *MsgUploadReport) GetLink() string {
 	if m != nil {
 		return m.Link
 	}
 	return ""
 }
 
-func (m *MsgSendReport) GetDescription() string {
+func (m *MsgUploadReport) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *MsgSendReport) GetTags() []string {
+func (m *MsgUploadReport) GetTags() []string {
 	if m != nil {
 		return m.Tags
 	}
 	return nil
 }
 
-type MsgSendReportResponse struct {
+type MsgUploadReportResponse struct {
 	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (m *MsgSendReportResponse) Reset()         { *m = MsgSendReportResponse{} }
-func (m *MsgSendReportResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSendReportResponse) ProtoMessage()    {}
-func (*MsgSendReportResponse) Descriptor() ([]byte, []int) {
+func (m *MsgUploadReportResponse) Reset()         { *m = MsgUploadReportResponse{} }
+func (m *MsgUploadReportResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUploadReportResponse) ProtoMessage()    {}
+func (*MsgUploadReportResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5074ff8a8990b5bf, []int{1}
 }
-func (m *MsgSendReportResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgUploadReportResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSendReportResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgUploadReportResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSendReportResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgUploadReportResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -128,19 +128,19 @@ func (m *MsgSendReportResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *MsgSendReportResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendReportResponse.Merge(m, src)
+func (m *MsgUploadReportResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUploadReportResponse.Merge(m, src)
 }
-func (m *MsgSendReportResponse) XXX_Size() int {
+func (m *MsgUploadReportResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSendReportResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendReportResponse.DiscardUnknown(m)
+func (m *MsgUploadReportResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUploadReportResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSendReportResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgUploadReportResponse proto.InternalMessageInfo
 
-func (m *MsgSendReportResponse) GetId() uint64 {
+func (m *MsgUploadReportResponse) GetId() uint64 {
 	if m != nil {
 		return m.Id
 	}
@@ -148,30 +148,30 @@ func (m *MsgSendReportResponse) GetId() uint64 {
 }
 
 func init() {
-	proto.RegisterType((*MsgSendReport)(nil), "garyeong.garyeong.MsgSendReport")
-	proto.RegisterType((*MsgSendReportResponse)(nil), "garyeong.garyeong.MsgSendReportResponse")
+	proto.RegisterType((*MsgUploadReport)(nil), "garyeong.garyeong.MsgUploadReport")
+	proto.RegisterType((*MsgUploadReportResponse)(nil), "garyeong.garyeong.MsgUploadReportResponse")
 }
 
 func init() { proto.RegisterFile("garyeong/tx.proto", fileDescriptor_5074ff8a8990b5bf) }
 
 var fileDescriptor_5074ff8a8990b5bf = []byte{
-	// 251 bytes of a gzipped FileDescriptorProto
+	// 253 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0x4f, 0x2c, 0xaa,
 	0x4c, 0xcd, 0xcf, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x82, 0x0b,
-	0xe9, 0xc1, 0x18, 0x4a, 0xdd, 0x8c, 0x5c, 0xbc, 0xbe, 0xc5, 0xe9, 0xc1, 0xa9, 0x79, 0x29, 0x41,
-	0xa9, 0x05, 0xf9, 0x45, 0x25, 0x42, 0x12, 0x5c, 0xec, 0xc9, 0x45, 0xa9, 0x89, 0x25, 0xf9, 0x45,
-	0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x90, 0x18, 0x17, 0x5b, 0x49, 0x62, 0x51,
-	0x7a, 0x6a, 0x89, 0x04, 0x13, 0x58, 0x02, 0xca, 0x13, 0x12, 0xe2, 0x62, 0xc9, 0xc9, 0xcc, 0xcb,
-	0x96, 0x60, 0x06, 0x8b, 0x82, 0xd9, 0x42, 0x0a, 0x5c, 0xdc, 0x29, 0xa9, 0xc5, 0xc9, 0x45, 0x99,
-	0x05, 0x25, 0x99, 0xf9, 0x79, 0x12, 0x2c, 0x60, 0x29, 0x64, 0x21, 0x90, 0xae, 0x92, 0xc4, 0xf4,
-	0x62, 0x09, 0x56, 0x05, 0x66, 0x90, 0x2e, 0x10, 0x5b, 0x49, 0x9d, 0x4b, 0x14, 0xc5, 0x31, 0x41,
-	0xa9, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0x7c, 0x5c, 0x4c, 0x99, 0x29, 0x60, 0xf7, 0xb0,
-	0x04, 0x31, 0x65, 0xa6, 0x18, 0xc5, 0x73, 0x31, 0xfb, 0x16, 0xa7, 0x0b, 0x45, 0x70, 0x71, 0x21,
-	0xb9, 0x5c, 0x41, 0x0f, 0xc3, 0x7f, 0x7a, 0x28, 0xc6, 0x49, 0x69, 0x10, 0x52, 0x01, 0xb3, 0xd0,
-	0xc9, 0xf8, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0,
-	0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0x24, 0xe1, 0xe1, 0x5a,
-	0xa1, 0x8f, 0x08, 0xe2, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0x70, 0x30, 0x1b, 0x03, 0x02, 0x00,
-	0x00, 0xff, 0xff, 0x13, 0xae, 0xd7, 0x5a, 0x7b, 0x01, 0x00, 0x00,
+	0xe9, 0xc1, 0x18, 0x4a, 0xbd, 0x8c, 0x5c, 0xfc, 0xbe, 0xc5, 0xe9, 0xa1, 0x05, 0x39, 0xf9, 0x89,
+	0x29, 0x41, 0xa9, 0x05, 0xf9, 0x45, 0x25, 0x42, 0x12, 0x5c, 0xec, 0xc9, 0x45, 0xa9, 0x89, 0x25,
+	0xf9, 0x45, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x90, 0x18, 0x17, 0x5b, 0x49,
+	0x62, 0x51, 0x7a, 0x6a, 0x89, 0x04, 0x13, 0x58, 0x02, 0xca, 0x13, 0x12, 0xe2, 0x62, 0xc9, 0xc9,
+	0xcc, 0xcb, 0x96, 0x60, 0x06, 0x8b, 0x82, 0xd9, 0x42, 0x0a, 0x5c, 0xdc, 0x29, 0xa9, 0xc5, 0xc9,
+	0x45, 0x99, 0x05, 0x25, 0x99, 0xf9, 0x79, 0x12, 0x2c, 0x60, 0x29, 0x64, 0x21, 0x90, 0xae, 0x92,
+	0xc4, 0xf4, 0x62, 0x09, 0x56, 0x05, 0x66, 0x90, 0x2e, 0x10, 0x5b, 0x49, 0x93, 0x4b, 0x1c, 0xcd,
+	0x39, 0x41, 0xa9, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0x7c, 0x5c, 0x4c, 0x99, 0x29, 0x60,
+	0x17, 0xb1, 0x04, 0x31, 0x65, 0xa6, 0x18, 0xa5, 0x72, 0x31, 0xfb, 0x16, 0xa7, 0x0b, 0xc5, 0x71,
+	0xf1, 0xa0, 0xb8, 0x5e, 0x49, 0x0f, 0xc3, 0x97, 0x7a, 0x68, 0x46, 0x4a, 0x69, 0x11, 0x56, 0x03,
+	0xb3, 0xd6, 0xc9, 0xf8, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63,
+	0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0x24, 0xe1,
+	0x21, 0x5c, 0xa1, 0x8f, 0x08, 0xec, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0x70, 0x80, 0x1b, 0x03,
+	0x02, 0x00, 0x00, 0xff, 0xff, 0x1b, 0x49, 0xe9, 0x84, 0x85, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -186,7 +186,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	SendReport(ctx context.Context, in *MsgSendReport, opts ...grpc.CallOption) (*MsgSendReportResponse, error)
+	UploadReport(ctx context.Context, in *MsgUploadReport, opts ...grpc.CallOption) (*MsgUploadReportResponse, error)
 }
 
 type msgClient struct {
@@ -197,9 +197,9 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) SendReport(ctx context.Context, in *MsgSendReport, opts ...grpc.CallOption) (*MsgSendReportResponse, error) {
-	out := new(MsgSendReportResponse)
-	err := c.cc.Invoke(ctx, "/garyeong.garyeong.Msg/SendReport", in, out, opts...)
+func (c *msgClient) UploadReport(ctx context.Context, in *MsgUploadReport, opts ...grpc.CallOption) (*MsgUploadReportResponse, error) {
+	out := new(MsgUploadReportResponse)
+	err := c.cc.Invoke(ctx, "/garyeong.garyeong.Msg/UploadReport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -208,35 +208,35 @@ func (c *msgClient) SendReport(ctx context.Context, in *MsgSendReport, opts ...g
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	SendReport(context.Context, *MsgSendReport) (*MsgSendReportResponse, error)
+	UploadReport(context.Context, *MsgUploadReport) (*MsgUploadReportResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) SendReport(ctx context.Context, req *MsgSendReport) (*MsgSendReportResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendReport not implemented")
+func (*UnimplementedMsgServer) UploadReport(ctx context.Context, req *MsgUploadReport) (*MsgUploadReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UploadReport not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_SendReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSendReport)
+func _Msg_UploadReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUploadReport)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).SendReport(ctx, in)
+		return srv.(MsgServer).UploadReport(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/garyeong.garyeong.Msg/SendReport",
+		FullMethod: "/garyeong.garyeong.Msg/UploadReport",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SendReport(ctx, req.(*MsgSendReport))
+		return srv.(MsgServer).UploadReport(ctx, req.(*MsgUploadReport))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -246,15 +246,15 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SendReport",
-			Handler:    _Msg_SendReport_Handler,
+			MethodName: "UploadReport",
+			Handler:    _Msg_UploadReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "garyeong/tx.proto",
 }
 
-func (m *MsgSendReport) Marshal() (dAtA []byte, err error) {
+func (m *MsgUploadReport) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -264,12 +264,12 @@ func (m *MsgSendReport) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendReport) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUploadReport) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendReport) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUploadReport) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -314,7 +314,7 @@ func (m *MsgSendReport) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSendReportResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgUploadReportResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -324,12 +324,12 @@ func (m *MsgSendReportResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendReportResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgUploadReportResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendReportResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgUploadReportResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -353,7 +353,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgSendReport) Size() (n int) {
+func (m *MsgUploadReport) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -384,7 +384,7 @@ func (m *MsgSendReport) Size() (n int) {
 	return n
 }
 
-func (m *MsgSendReportResponse) Size() (n int) {
+func (m *MsgUploadReportResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -402,7 +402,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgSendReport) Unmarshal(dAtA []byte) error {
+func (m *MsgUploadReport) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -425,10 +425,10 @@ func (m *MsgSendReport) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendReport: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUploadReport: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendReport: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUploadReport: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -612,7 +612,7 @@ func (m *MsgSendReport) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSendReportResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgUploadReportResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -635,10 +635,10 @@ func (m *MsgSendReportResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendReportResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgUploadReportResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendReportResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgUploadReportResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

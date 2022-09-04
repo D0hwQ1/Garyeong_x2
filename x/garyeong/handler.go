@@ -17,8 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgSendReport:
-			res, err := msgServer.SendReport(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgUploadReport:
+			res, err := msgServer.UploadReport(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

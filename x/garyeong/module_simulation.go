@@ -24,9 +24,9 @@ var (
 )
 
 const (
-	opWeightMsgSendReport = "op_weight_msg_send_report"
+	opWeightMsgUploadReport = "op_weight_msg_upload_report"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgSendReport int = 100
+	defaultWeightMsgUploadReport int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -62,15 +62,15 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgSendReport int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSendReport, &weightMsgSendReport, nil,
+	var weightMsgUploadReport int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUploadReport, &weightMsgUploadReport, nil,
 		func(_ *rand.Rand) {
-			weightMsgSendReport = defaultWeightMsgSendReport
+			weightMsgUploadReport = defaultWeightMsgUploadReport
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgSendReport,
-		garyeongsimulation.SimulateMsgSendReport(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgUploadReport,
+		garyeongsimulation.SimulateMsgUploadReport(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
