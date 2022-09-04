@@ -85,6 +85,12 @@ export interface QueryGetProfilesResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryGetProfilesCountRequest {}
+
+export interface QueryGetProfilesCountResponse {
+  count: number;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1417,6 +1423,127 @@ export const QueryGetProfilesResponse = {
   },
 };
 
+const baseQueryGetProfilesCountRequest: object = {};
+
+export const QueryGetProfilesCountRequest = {
+  encode(
+    _: QueryGetProfilesCountRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfilesCountRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfilesCountRequest,
+    } as QueryGetProfilesCountRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetProfilesCountRequest {
+    const message = {
+      ...baseQueryGetProfilesCountRequest,
+    } as QueryGetProfilesCountRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetProfilesCountRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetProfilesCountRequest>
+  ): QueryGetProfilesCountRequest {
+    const message = {
+      ...baseQueryGetProfilesCountRequest,
+    } as QueryGetProfilesCountRequest;
+    return message;
+  },
+};
+
+const baseQueryGetProfilesCountResponse: object = { count: 0 };
+
+export const QueryGetProfilesCountResponse = {
+  encode(
+    message: QueryGetProfilesCountResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.count !== 0) {
+      writer.uint32(8).uint64(message.count);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfilesCountResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfilesCountResponse,
+    } as QueryGetProfilesCountResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.count = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfilesCountResponse {
+    const message = {
+      ...baseQueryGetProfilesCountResponse,
+    } as QueryGetProfilesCountResponse;
+    if (object.count !== undefined && object.count !== null) {
+      message.count = Number(object.count);
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfilesCountResponse): unknown {
+    const obj: any = {};
+    message.count !== undefined && (obj.count = message.count);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfilesCountResponse>
+  ): QueryGetProfilesCountResponse {
+    const message = {
+      ...baseQueryGetProfilesCountResponse,
+    } as QueryGetProfilesCountResponse;
+    if (object.count !== undefined && object.count !== null) {
+      message.count = object.count;
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1453,6 +1580,10 @@ export interface Query {
   GetProfiles(
     request: QueryGetProfilesRequest
   ): Promise<QueryGetProfilesResponse>;
+  /** Queries a list of GetProfilesCount items. */
+  GetProfilesCount(
+    request: QueryGetProfilesCountRequest
+  ): Promise<QueryGetProfilesCountResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1575,6 +1706,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetProfilesResponse.decode(new Reader(data))
+    );
+  }
+
+  GetProfilesCount(
+    request: QueryGetProfilesCountRequest
+  ): Promise<QueryGetProfilesCountResponse> {
+    const data = QueryGetProfilesCountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetProfilesCount",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetProfilesCountResponse.decode(new Reader(data))
     );
   }
 }

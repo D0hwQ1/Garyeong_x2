@@ -56,6 +56,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_profiles";
 	}
 
+// Queries a list of GetProfilesCount items.
+	rpc GetProfilesCount(QueryGetProfilesCountRequest) returns (QueryGetProfilesCountResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_profiles_count";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -133,6 +138,13 @@ cosmos.base.query.v1beta1.PageRequest pagination = 1;
 message QueryGetProfilesResponse {
   repeated Profile profiles = 1;
 cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetProfilesCountRequest {
+}
+
+message QueryGetProfilesCountResponse {
+  uint64 count = 1;
 }
 
 // this line is used by starport scaffolding # 3

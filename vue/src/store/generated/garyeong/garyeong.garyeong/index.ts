@@ -53,6 +53,7 @@ const getDefaultState = () => {
 				GetReportByTarget: {},
 				GetReportsByTags: {},
 				GetProfiles: {},
+				GetProfilesCount: {},
 				
 				_Structure: {
 						Profile: getStructure(Profile.fromPartial({})),
@@ -140,6 +141,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.GetProfiles[JSON.stringify(params)] ?? {}
+		},
+				getGetProfilesCount: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.GetProfilesCount[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -380,6 +387,28 @@ export default {
 				return getters['getGetProfiles']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryGetProfiles API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryGetProfilesCount({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGetProfilesCount()).data
+				
+					
+				commit('QUERY', { query: 'GetProfilesCount', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetProfilesCount', payload: { options: { all }, params: {...key},query }})
+				return getters['getGetProfilesCount']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryGetProfilesCount API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

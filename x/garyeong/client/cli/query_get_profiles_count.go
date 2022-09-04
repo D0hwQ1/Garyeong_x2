@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdGetProfiles() *cobra.Command {
+func CmdGetProfilesCount() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-profiles",
-		Short: "Query GetProfiles",
+		Use:   "get-profiles-count",
+		Short: "Query GetProfilesCount",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,15 +25,9 @@ func CmdGetProfiles() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetProfilesRequest{}
+			params := &types.QueryGetProfilesCountRequest{}
 
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
-			if err != nil {
-				return err
-			}
-			params.Pagination = pageReq
-
-			res, err := queryClient.GetProfiles(cmd.Context(), params)
+			res, err := queryClient.GetProfilesCount(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

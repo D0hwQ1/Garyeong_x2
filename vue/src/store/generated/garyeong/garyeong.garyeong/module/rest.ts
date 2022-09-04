@@ -85,6 +85,11 @@ export interface GaryeongQueryGetCommentsByReportIdResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface GaryeongQueryGetProfilesCountResponse {
+  /** @format uint64 */
+  count?: string;
+}
+
 export interface GaryeongQueryGetProfilesResponse {
   profiles?: GaryeongProfile[];
 
@@ -492,6 +497,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/garyeong/garyeong/get_profiles`,
       method: "GET",
       query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetProfilesCount
+   * @summary Queries a list of GetProfilesCount items.
+   * @request GET:/garyeong/garyeong/get_profiles_count
+   */
+  queryGetProfilesCount = (params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetProfilesCountResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_profiles_count`,
+      method: "GET",
       format: "json",
       ...params,
     });
