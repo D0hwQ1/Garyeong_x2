@@ -46,6 +46,12 @@ export interface QueryGetCommentByIdResponse {
   comment: Comment | undefined;
 }
 
+export interface QueryGetReportsCountRequest {}
+
+export interface QueryGetReportsCountResponse {
+  count: number;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -647,6 +653,127 @@ export const QueryGetCommentByIdResponse = {
   },
 };
 
+const baseQueryGetReportsCountRequest: object = {};
+
+export const QueryGetReportsCountRequest = {
+  encode(
+    _: QueryGetReportsCountRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportsCountRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportsCountRequest,
+    } as QueryGetReportsCountRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetReportsCountRequest {
+    const message = {
+      ...baseQueryGetReportsCountRequest,
+    } as QueryGetReportsCountRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetReportsCountRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetReportsCountRequest>
+  ): QueryGetReportsCountRequest {
+    const message = {
+      ...baseQueryGetReportsCountRequest,
+    } as QueryGetReportsCountRequest;
+    return message;
+  },
+};
+
+const baseQueryGetReportsCountResponse: object = { count: 0 };
+
+export const QueryGetReportsCountResponse = {
+  encode(
+    message: QueryGetReportsCountResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.count !== 0) {
+      writer.uint32(8).uint64(message.count);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetReportsCountResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetReportsCountResponse,
+    } as QueryGetReportsCountResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.count = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetReportsCountResponse {
+    const message = {
+      ...baseQueryGetReportsCountResponse,
+    } as QueryGetReportsCountResponse;
+    if (object.count !== undefined && object.count !== null) {
+      message.count = Number(object.count);
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetReportsCountResponse): unknown {
+    const obj: any = {};
+    message.count !== undefined && (obj.count = message.count);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetReportsCountResponse>
+  ): QueryGetReportsCountResponse {
+    const message = {
+      ...baseQueryGetReportsCountResponse,
+    } as QueryGetReportsCountResponse;
+    if (object.count !== undefined && object.count !== null) {
+      message.count = object.count;
+    } else {
+      message.count = 0;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -663,6 +790,10 @@ export interface Query {
   GetCommentById(
     request: QueryGetCommentByIdRequest
   ): Promise<QueryGetCommentByIdResponse>;
+  /** Queries a list of GetReportsCount items. */
+  GetReportsCount(
+    request: QueryGetReportsCountRequest
+  ): Promise<QueryGetReportsCountResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -715,6 +846,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetCommentByIdResponse.decode(new Reader(data))
+    );
+  }
+
+  GetReportsCount(
+    request: QueryGetReportsCountRequest
+  ): Promise<QueryGetReportsCountResponse> {
+    const data = QueryGetReportsCountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetReportsCount",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetReportsCountResponse.decode(new Reader(data))
     );
   }
 }

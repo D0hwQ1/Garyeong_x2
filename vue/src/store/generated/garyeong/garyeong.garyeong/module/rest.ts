@@ -68,6 +68,11 @@ export interface GaryeongQueryGetCommentsByReportIdResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface GaryeongQueryGetReportsCountResponse {
+  /** @format uint64 */
+  count?: string;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -140,6 +145,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -369,6 +381,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -411,6 +424,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -418,6 +432,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/garyeong/garyeong/get_comments_by_report_id/${reportId}`,
       method: "GET",
       query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetReportsCount
+   * @summary Queries a list of GetReportsCount items.
+   * @request GET:/garyeong/garyeong/get_reports_count
+   */
+  queryGetReportsCount = (params: RequestParams = {}) =>
+    this.request<GaryeongQueryGetReportsCountResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_reports_count`,
+      method: "GET",
       format: "json",
       ...params,
     });

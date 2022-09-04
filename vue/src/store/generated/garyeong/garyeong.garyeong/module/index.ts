@@ -4,13 +4,13 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUploadReport } from "./types/garyeong/tx";
 import { MsgCreateComment } from "./types/garyeong/tx";
+import { MsgUploadReport } from "./types/garyeong/tx";
 
 
 const types = [
-  ["/garyeong.garyeong.MsgUploadReport", MsgUploadReport],
   ["/garyeong.garyeong.MsgCreateComment", MsgCreateComment],
+  ["/garyeong.garyeong.MsgUploadReport", MsgUploadReport],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -43,8 +43,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUploadReport: (data: MsgUploadReport): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgUploadReport", value: MsgUploadReport.fromPartial( data ) }),
     msgCreateComment: (data: MsgCreateComment): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgCreateComment", value: MsgCreateComment.fromPartial( data ) }),
+    msgUploadReport: (data: MsgUploadReport): EncodeObject => ({ typeUrl: "/garyeong.garyeong.MsgUploadReport", value: MsgUploadReport.fromPartial( data ) }),
     
   };
 };

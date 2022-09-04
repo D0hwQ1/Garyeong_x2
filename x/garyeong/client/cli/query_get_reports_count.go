@@ -6,22 +6,17 @@ import (
 	"garyeong/x/garyeong/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdGetCommentById() *cobra.Command {
+func CmdGetReportsCount() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-comment-by-id [id]",
-		Short: "Query GetCommentById",
-		Args:  cobra.ExactArgs(1),
+		Use:   "get-reports-count",
+		Short: "Query GetReportsCount",
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqId, err := cast.ToUint64E(args[0])
-			if err != nil {
-				return err
-			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,12 +25,9 @@ func CmdGetCommentById() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetCommentByIdRequest{
+			params := &types.QueryGetReportsCountRequest{}
 
-				Id: reqId,
-			}
-
-			res, err := queryClient.GetCommentById(cmd.Context(), params)
+			res, err := queryClient.GetReportsCount(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

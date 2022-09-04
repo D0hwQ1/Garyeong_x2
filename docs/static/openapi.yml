@@ -20250,6 +20250,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/garyeong/garyeong/get_comment_by_id/{id}':
@@ -20429,6 +20439,49 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /garyeong/garyeong/get_reports_count:
+    get:
+      summary: Queries a list of GetReportsCount items.
+      operationId: GaryeongGaryeongGetReportsCount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              count:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /garyeong/garyeong/params:
@@ -47633,6 +47686,12 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  garyeong.garyeong.QueryGetReportsCountResponse:
+    type: object
+    properties:
+      count:
+        type: string
+        format: uint64
   garyeong.garyeong.QueryParamsResponse:
     type: object
     properties:

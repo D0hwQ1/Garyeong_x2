@@ -31,6 +31,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_comment_by_id/{id}";
 	}
 
+// Queries a list of GetReportsCount items.
+	rpc GetReportsCount(QueryGetReportsCountRequest) returns (QueryGetReportsCountResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_reports_count";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -68,6 +73,13 @@ message QueryGetCommentByIdRequest {
 
 message QueryGetCommentByIdResponse {
   Comment comment = 1;
+}
+
+message QueryGetReportsCountRequest {
+}
+
+message QueryGetReportsCountResponse {
+  uint64 count = 1;
 }
 
 // this line is used by starport scaffolding # 3
