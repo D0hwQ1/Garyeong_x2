@@ -4,7 +4,6 @@ import (
 	"strconv"
 
 	"garyeong/x/garyeong/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
@@ -12,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdGetReports() *cobra.Command {
+func CmdGetAllReports() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "report",
-		Short: "Query report",
+		Use:   "get-all-reports",
+		Short: "Query GetAllReports",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -26,9 +25,9 @@ func CmdGetReports() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetReportsRequest{}
+			params := &types.QueryGetAllReportsRequest{}
 
-			res, err := queryClient.GetReports(cmd.Context(), params)
+			res, err := queryClient.GetAllReports(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

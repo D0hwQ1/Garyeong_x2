@@ -4,7 +4,7 @@ import * as Long from "long";
 
 export const protobufPackage = "garyeong.garyeong";
 
-export interface MsgSendReport {
+export interface MsgUploadReport {
   creator: string;
   target: string;
   link: string;
@@ -12,11 +12,11 @@ export interface MsgSendReport {
   tags: string[];
 }
 
-export interface MsgSendReportResponse {
+export interface MsgUploadReportResponse {
   id: number;
 }
 
-const baseMsgSendReport: object = {
+const baseMsgUploadReport: object = {
   creator: "",
   target: "",
   link: "",
@@ -24,8 +24,8 @@ const baseMsgSendReport: object = {
   tags: "",
 };
 
-export const MsgSendReport = {
-  encode(message: MsgSendReport, writer: Writer = Writer.create()): Writer {
+export const MsgUploadReport = {
+  encode(message: MsgUploadReport, writer: Writer = Writer.create()): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -44,10 +44,10 @@ export const MsgSendReport = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgSendReport {
+  decode(input: Reader | Uint8Array, length?: number): MsgUploadReport {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+    const message = { ...baseMsgUploadReport } as MsgUploadReport;
     message.tags = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -75,8 +75,8 @@ export const MsgSendReport = {
     return message;
   },
 
-  fromJSON(object: any): MsgSendReport {
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+  fromJSON(object: any): MsgUploadReport {
+    const message = { ...baseMsgUploadReport } as MsgUploadReport;
     message.tags = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = String(object.creator);
@@ -106,7 +106,7 @@ export const MsgSendReport = {
     return message;
   },
 
-  toJSON(message: MsgSendReport): unknown {
+  toJSON(message: MsgUploadReport): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.target !== undefined && (obj.target = message.target);
@@ -121,8 +121,8 @@ export const MsgSendReport = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgSendReport>): MsgSendReport {
-    const message = { ...baseMsgSendReport } as MsgSendReport;
+  fromPartial(object: DeepPartial<MsgUploadReport>): MsgUploadReport {
+    const message = { ...baseMsgUploadReport } as MsgUploadReport;
     message.tags = [];
     if (object.creator !== undefined && object.creator !== null) {
       message.creator = object.creator;
@@ -153,11 +153,11 @@ export const MsgSendReport = {
   },
 };
 
-const baseMsgSendReportResponse: object = { id: 0 };
+const baseMsgUploadReportResponse: object = { id: 0 };
 
-export const MsgSendReportResponse = {
+export const MsgUploadReportResponse = {
   encode(
-    message: MsgSendReportResponse,
+    message: MsgUploadReportResponse,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.id !== 0) {
@@ -166,10 +166,12 @@ export const MsgSendReportResponse = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgSendReportResponse {
+  decode(input: Reader | Uint8Array, length?: number): MsgUploadReportResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
+    const message = {
+      ...baseMsgUploadReportResponse,
+    } as MsgUploadReportResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -184,8 +186,10 @@ export const MsgSendReportResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgSendReportResponse {
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
+  fromJSON(object: any): MsgUploadReportResponse {
+    const message = {
+      ...baseMsgUploadReportResponse,
+    } as MsgUploadReportResponse;
     if (object.id !== undefined && object.id !== null) {
       message.id = Number(object.id);
     } else {
@@ -194,16 +198,18 @@ export const MsgSendReportResponse = {
     return message;
   },
 
-  toJSON(message: MsgSendReportResponse): unknown {
+  toJSON(message: MsgUploadReportResponse): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<MsgSendReportResponse>
-  ): MsgSendReportResponse {
-    const message = { ...baseMsgSendReportResponse } as MsgSendReportResponse;
+    object: DeepPartial<MsgUploadReportResponse>
+  ): MsgUploadReportResponse {
+    const message = {
+      ...baseMsgUploadReportResponse,
+    } as MsgUploadReportResponse;
     if (object.id !== undefined && object.id !== null) {
       message.id = object.id;
     } else {
@@ -216,7 +222,7 @@ export const MsgSendReportResponse = {
 /** Msg defines the Msg service. */
 export interface Msg {
   /** this line is used by starport scaffolding # proto/tx/rpc */
-  SendReport(request: MsgSendReport): Promise<MsgSendReportResponse>;
+  UploadReport(request: MsgUploadReport): Promise<MsgUploadReportResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -224,15 +230,15 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  SendReport(request: MsgSendReport): Promise<MsgSendReportResponse> {
-    const data = MsgSendReport.encode(request).finish();
+  UploadReport(request: MsgUploadReport): Promise<MsgUploadReportResponse> {
+    const data = MsgUploadReport.encode(request).finish();
     const promise = this.rpc.request(
       "garyeong.garyeong.Msg",
-      "SendReport",
+      "UploadReport",
       data
     );
     return promise.then((data) =>
-      MsgSendReportResponse.decode(new Reader(data))
+      MsgUploadReportResponse.decode(new Reader(data))
     );
   }
 }

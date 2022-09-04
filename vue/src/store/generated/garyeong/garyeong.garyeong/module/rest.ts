@@ -9,20 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-export interface GaryeongComment {
-  /** @format uint64 */
-  id?: string;
-  creator?: string;
-  comment?: string;
-
-  /** @format int32 */
-  createdAt?: number;
-
-  /** @format uint64 */
-  reportId?: string;
-}
-
-export interface GaryeongMsgSendReportResponse {
+export interface GaryeongMsgUploadReportResponse {
   /** @format uint64 */
   id?: string;
 }
@@ -32,27 +19,8 @@ export interface GaryeongMsgSendReportResponse {
  */
 export type GaryeongParams = object;
 
-export interface GaryeongQueryAllCommentResponse {
-  Comment?: GaryeongComment[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface GaryeongQueryGetCommentResponse {
-  Comment?: GaryeongComment;
-}
-
-export interface GaryeongQueryGetReportsResponse {
-  report?: GaryeongReport[];
+export interface GaryeongQueryGetAllReportsResponse {
+  reports?: GaryeongReport[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -81,10 +49,13 @@ export interface GaryeongReport {
   target?: string;
   link?: string;
   description?: string;
+  tags?: string[];
 
   /** @format uint64 */
   recommend?: string;
-  tags?: string[];
+
+  /** @format int64 */
+  createdAt?: string;
 }
 
 export interface ProtobufAny {
@@ -135,13 +106,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -353,7 +317,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title garyeong/comment.proto
+ * @title garyeong/genesis.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -361,40 +325,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryCommentAll
-   * @summary Queries a list of Comment items.
-   * @request GET:/garyeong/garyeong/comment
+   * @name QueryGetAllReports
+   * @summary Queries a list of GetAllReports items.
+   * @request GET:/garyeong/garyeong/get_all_reports
    */
-  queryCommentAll = (
+  queryGetAllReports = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
-    this.request<GaryeongQueryAllCommentResponse, RpcStatus>({
-      path: `/garyeong/garyeong/comment`,
+    this.request<GaryeongQueryGetAllReportsResponse, RpcStatus>({
+      path: `/garyeong/garyeong/get_all_reports`,
       method: "GET",
       query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryComment
-   * @summary Queries a Comment by id.
-   * @request GET:/garyeong/garyeong/comment/{id}
-   */
-  queryComment = (id: string, params: RequestParams = {}) =>
-    this.request<GaryeongQueryGetCommentResponse, RpcStatus>({
-      path: `/garyeong/garyeong/comment/${id}`,
-      method: "GET",
       format: "json",
       ...params,
     });
@@ -411,32 +358,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<GaryeongQueryParamsResponse, RpcStatus>({
       path: `/garyeong/garyeong/params`,
       method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryGetReports
-   * @summary Queries a list of Report items.
-   * @request GET:/garyeong/garyeong/report
-   */
-  queryGetReports = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<GaryeongQueryGetReportsResponse, RpcStatus>({
-      path: `/garyeong/garyeong/report`,
-      method: "GET",
-      query: query,
       format: "json",
       ...params,
     });

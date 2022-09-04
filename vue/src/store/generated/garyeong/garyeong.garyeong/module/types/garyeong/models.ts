@@ -10,8 +10,9 @@ export interface Report {
   target: string;
   link: string;
   description: string;
-  recommend: number;
   tags: string[];
+  recommend: number;
+  createdAt: number;
 }
 
 const baseReport: object = {
@@ -20,8 +21,9 @@ const baseReport: object = {
   target: "",
   link: "",
   description: "",
-  recommend: 0,
   tags: "",
+  recommend: 0,
+  createdAt: 0,
 };
 
 export const Report = {
@@ -41,11 +43,14 @@ export const Report = {
     if (message.description !== "") {
       writer.uint32(42).string(message.description);
     }
+    for (const v of message.tags) {
+      writer.uint32(50).string(v!);
+    }
     if (message.recommend !== 0) {
       writer.uint32(56).uint64(message.recommend);
     }
-    for (const v of message.tags) {
-      writer.uint32(50).string(v!);
+    if (message.createdAt !== 0) {
+      writer.uint32(64).int64(message.createdAt);
     }
     return writer;
   },
@@ -73,11 +78,14 @@ export const Report = {
         case 5:
           message.description = reader.string();
           break;
+        case 6:
+          message.tags.push(reader.string());
+          break;
         case 7:
           message.recommend = longToNumber(reader.uint64() as Long);
           break;
-        case 6:
-          message.tags.push(reader.string());
+        case 8:
+          message.createdAt = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -115,15 +123,20 @@ export const Report = {
     } else {
       message.description = "";
     }
+    if (object.tags !== undefined && object.tags !== null) {
+      for (const e of object.tags) {
+        message.tags.push(String(e));
+      }
+    }
     if (object.recommend !== undefined && object.recommend !== null) {
       message.recommend = Number(object.recommend);
     } else {
       message.recommend = 0;
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      for (const e of object.tags) {
-        message.tags.push(String(e));
-      }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = Number(object.createdAt);
+    } else {
+      message.createdAt = 0;
     }
     return message;
   },
@@ -136,12 +149,13 @@ export const Report = {
     message.link !== undefined && (obj.link = message.link);
     message.description !== undefined &&
       (obj.description = message.description);
-    message.recommend !== undefined && (obj.recommend = message.recommend);
     if (message.tags) {
       obj.tags = message.tags.map((e) => e);
     } else {
       obj.tags = [];
     }
+    message.recommend !== undefined && (obj.recommend = message.recommend);
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt);
     return obj;
   },
 
@@ -173,15 +187,20 @@ export const Report = {
     } else {
       message.description = "";
     }
+    if (object.tags !== undefined && object.tags !== null) {
+      for (const e of object.tags) {
+        message.tags.push(e);
+      }
+    }
     if (object.recommend !== undefined && object.recommend !== null) {
       message.recommend = object.recommend;
     } else {
       message.recommend = 0;
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      for (const e of object.tags) {
-        message.tags.push(e);
-      }
+    if (object.createdAt !== undefined && object.createdAt !== null) {
+      message.createdAt = object.createdAt;
+    } else {
+      message.createdAt = 0;
     }
     return message;
   },
