@@ -91,6 +91,14 @@ export interface QueryGetProfilesCountResponse {
   count: number;
 }
 
+export interface QueryGetProfileByIdRequest {
+  id: number;
+}
+
+export interface QueryGetProfileByIdResponse {
+  profile: Profile | undefined;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1544,6 +1552,147 @@ export const QueryGetProfilesCountResponse = {
   },
 };
 
+const baseQueryGetProfileByIdRequest: object = { id: 0 };
+
+export const QueryGetProfileByIdRequest = {
+  encode(
+    message: QueryGetProfileByIdRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfileByIdRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfileByIdRequest,
+    } as QueryGetProfileByIdRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfileByIdRequest {
+    const message = {
+      ...baseQueryGetProfileByIdRequest,
+    } as QueryGetProfileByIdRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfileByIdRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfileByIdRequest>
+  ): QueryGetProfileByIdRequest {
+    const message = {
+      ...baseQueryGetProfileByIdRequest,
+    } as QueryGetProfileByIdRequest;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetProfileByIdResponse: object = {};
+
+export const QueryGetProfileByIdResponse = {
+  encode(
+    message: QueryGetProfileByIdResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.profile !== undefined) {
+      Profile.encode(message.profile, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetProfileByIdResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetProfileByIdResponse,
+    } as QueryGetProfileByIdResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.profile = Profile.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetProfileByIdResponse {
+    const message = {
+      ...baseQueryGetProfileByIdResponse,
+    } as QueryGetProfileByIdResponse;
+    if (object.profile !== undefined && object.profile !== null) {
+      message.profile = Profile.fromJSON(object.profile);
+    } else {
+      message.profile = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetProfileByIdResponse): unknown {
+    const obj: any = {};
+    message.profile !== undefined &&
+      (obj.profile = message.profile
+        ? Profile.toJSON(message.profile)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetProfileByIdResponse>
+  ): QueryGetProfileByIdResponse {
+    const message = {
+      ...baseQueryGetProfileByIdResponse,
+    } as QueryGetProfileByIdResponse;
+    if (object.profile !== undefined && object.profile !== null) {
+      message.profile = Profile.fromPartial(object.profile);
+    } else {
+      message.profile = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1584,6 +1733,10 @@ export interface Query {
   GetProfilesCount(
     request: QueryGetProfilesCountRequest
   ): Promise<QueryGetProfilesCountResponse>;
+  /** Queries a list of GetProfileById items. */
+  GetProfileById(
+    request: QueryGetProfileByIdRequest
+  ): Promise<QueryGetProfileByIdResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1720,6 +1873,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetProfilesCountResponse.decode(new Reader(data))
+    );
+  }
+
+  GetProfileById(
+    request: QueryGetProfileByIdRequest
+  ): Promise<QueryGetProfileByIdResponse> {
+    const data = QueryGetProfileByIdRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "garyeong.garyeong.Query",
+      "GetProfileById",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetProfileByIdResponse.decode(new Reader(data))
     );
   }
 }

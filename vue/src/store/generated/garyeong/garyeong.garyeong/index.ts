@@ -54,6 +54,7 @@ const getDefaultState = () => {
 				GetReportsByTags: {},
 				GetProfiles: {},
 				GetProfilesCount: {},
+				GetProfileById: {},
 				
 				_Structure: {
 						Profile: getStructure(Profile.fromPartial({})),
@@ -147,6 +148,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.GetProfilesCount[JSON.stringify(params)] ?? {}
+		},
+				getGetProfileById: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.GetProfileById[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -414,21 +421,28 @@ export default {
 		},
 		
 		
-		async sendMsgUploadReport({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryGetProfileById({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUploadReport(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGetProfileById( key.id)).data
+				
+					
+				commit('QUERY', { query: 'GetProfileById', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetProfileById', payload: { options: { all }, params: {...key},query }})
+				return getters['getGetProfileById']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUploadReport:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUploadReport:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryGetProfileById API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
 		async sendMsgSetProfile({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -441,6 +455,21 @@ export default {
 					throw new Error('TxClient:MsgSetProfile:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgSetProfile:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUploadReport({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUploadReport(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUploadReport:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUploadReport:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -460,19 +489,6 @@ export default {
 			}
 		},
 		
-		async MsgUploadReport({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgUploadReport(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUploadReport:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUploadReport:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgSetProfile({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -483,6 +499,19 @@ export default {
 					throw new Error('TxClient:MsgSetProfile:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSetProfile:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUploadReport({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUploadReport(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUploadReport:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUploadReport:Create Could not create message: ' + e.message)
 				}
 			}
 		},

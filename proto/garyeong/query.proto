@@ -61,6 +61,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_profiles_count";
 	}
 
+// Queries a list of GetProfileById items.
+	rpc GetProfileById(QueryGetProfileByIdRequest) returns (QueryGetProfileByIdResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_profile_by_id/{id}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -145,6 +150,14 @@ message QueryGetProfilesCountRequest {
 
 message QueryGetProfilesCountResponse {
   uint64 count = 1;
+}
+
+message QueryGetProfileByIdRequest {
+  uint64 id = 1;
+}
+
+message QueryGetProfileByIdResponse {
+  Profile profile = 1;
 }
 
 // this line is used by starport scaffolding # 3
