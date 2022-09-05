@@ -1,0 +1,21 @@
+accounts:
+    - name: alice
+      coins: ["20000usave"]
+    - name: bob
+      coins: ["10000usave"]
+
+validator:
+    name: alice
+    staked: "100000000stake"
+client:
+    openapi:
+        path: "docs/static/openapi.yml"
+faucet:
+    name: bob
+    coins: ["50000usave"]
+genesis:
+    chain_id: "garyeong-testnet-1"
+    app_state:
+        staking:
+            params:
+                bond_denom: "usave"

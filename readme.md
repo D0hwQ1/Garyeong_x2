@@ -1,39 +1,36 @@
 # garyeong
 
-**garyeong** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+우리말샘을 살펴보면...
 
-## Get started
+> 가령 : 가정하여 말하여. / 예를 들어.
+
+> 가령가령-하다 : 깨끗하고 곱다.
+
+## How to Start Garyeong_x2
 
 ```
+
+cd core
+ignite scaffold chain garyeong --prefix-address garyeong
+ignite chain build -o ./
 ignite chain serve
 ```
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+## RPCs
 
-```
-ignite scaffold chain garyeong --prefix-address garyeong
-```
+-   UploadReport(report)
+-   CreateComment(reportId, message)
+-   SetProfile(profile)
+-   SendRecommend(reportId)
 
-```
-ignite scaffold message upload-report target link description tags:strings
-ignite scaffold query GetAllReports --response id:uint,creator,target,link,description,tags:strings,recommend:uint,createdAt:int
-
-./garyeongd tx garyeong upload-report ipsi none example "univ,test" --from alice
-./garyeongd q garyeong get-all-reports
-```
-
-```
-ignite scaffold message create-comment reportId:uint comment
-ignite scaffold query GetCommentsByReportId reportId:uint --paginated --response comments:Comment
-
-./garyeongd tx garyeong create-comment 0 "Hello, World" --from alice
-./garyeongd tx garyeong create-comment 0 "World, Hello" --from bob
-./garyeongd q garyeong get-comments-by-report-id 0
-
-ignite scaffold query GetCommentById id:uint --response comment:Comment
-
-./garyeongd tx garyeong upload-report ipsi2 none example "univ,test" --from alice
-./garyeongd tx garyeong create-comment 1 "Hello, World2" --from alice
-./garyeongd q garyeong get-comments-by-report-id 1
-./garyeongd q garyeong get-comment-by-id 2
-```
+-   GetAllReports()
+-   GetReportsCount()
+-   GetReportById(id)
+-   GetReportByTarget(target)
+-   GetReportsByTags(tags)
+-   GetCommentsByReportId(id)
+-   GetCommentById(id)
+-   GetProfiles()
+-   GetProfileCount()
+-   GetProfileById(id)
+-   GetProfileByAddress(address)
