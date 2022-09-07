@@ -1,20 +1,25 @@
 accounts:
     - name: alice
-      coins: ["20000usave"]
+      coins: ["5000000000usave"]
+    - name: alice2
+      coins: ["1230000000usave"]
     - name: bob
-      coins: ["10000usave"]
+      coins: ["1500000000usave"]
+    - name: pjt
+      coins: ["5000000000usave"]
+      address: garyeong1h69uhegh8dmcwp209xv6azccu3gphxqtdauuvm
 
 validator:
     name: alice
-    staked: "100000000stake"
+    staked: "3000000000usave"
 client:
     openapi:
         path: "docs/static/openapi.yml"
 faucet:
     name: bob
-    coins: ["50000usave"]
+    coins: ["1500000000usave"]
 genesis:
-    chain_id: "garyeong-testnet-1"
+    chain_id: "garyeong_x2"
     app_state:
         staking:
             params:
