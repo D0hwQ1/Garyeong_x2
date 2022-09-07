@@ -34,7 +34,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCreateComment())
 	cmd.AddCommand(CmdSetProfile())
 	cmd.AddCommand(CmdSendRecommend())
-// this line is used by starport scaffolding # 1
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }

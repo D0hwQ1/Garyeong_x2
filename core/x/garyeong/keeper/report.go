@@ -15,14 +15,14 @@ func (k Keeper) AddReport(ctx sdk.Context, report types.Report) (uint64, error) 
 	count := k.GetReportCount(ctx)
 
 	report.Id = count
-	
+
 	reports, err := k.GetEveryReport(ctx)
 	if err != nil {
 		return 0, err
 	}
 
 	for i := uint64(0); i < count; i++ {
-		if (reports[i].Target == report.Target) {
+		if reports[i].Target == report.Target {
 			return 0, errors.New("report already exists")
 		}
 	}

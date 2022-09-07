@@ -12,7 +12,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateComment{}, "garyeong/CreateComment", nil)
 	cdc.RegisterConcrete(&MsgSetProfile{}, "garyeong/SetProfile", nil)
 	cdc.RegisterConcrete(&MsgSendRecommend{}, "garyeong/SendRecommend", nil)
-// this line is used by starport scaffolding # 2
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -26,9 +26,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSetProfile{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSendRecommend{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgSendRecommend{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"errors"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
