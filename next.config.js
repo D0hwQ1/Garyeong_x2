@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
-require("dotenv").config();
+require("dotenv").config()
 
-const nextConfig = {
+module.exports = {
     reactStrictMode: true,
-};
-
-module.exports = nextConfig;
+    async rewrites() {
+        return [
+            {
+                source: "/api/faucet",
+                destination: "http://d0hwq1.com:4500/",
+            },
+        ]
+    },
+}
