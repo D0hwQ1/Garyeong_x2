@@ -95,7 +95,7 @@ export default function Report() {
                                 alert("프로필이 없습니다.\n프로필을 생성하겠습니다.");
 
                                 res = await tx.signAndBroadcast([tx.msgSetProfile({ creator: addr })]);
-                                alert("프로필 생성 완료.\n추천을 다시 시도해주세요.");
+                                alert("프로필 생성 완료.\n제출을 다시 시도해주세요.");
                             }
                         }
                     }}
