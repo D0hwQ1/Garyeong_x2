@@ -34,3 +34,15 @@ ignite chain serve
 -   GetProfileCount()
 -   GetProfileById(id)
 -   GetProfileByAddress(address)
+
+​/garyeong​/garyeong​/get_all_reports
+​/garyeong​/garyeong​/get_comment_by_id​/{id}
+​/garyeong​/garyeong​/get_comments_by_report_id​/{reportId}
+​/garyeong​/garyeong​/get_profile_by_address​/{address}
+​/garyeong​/garyeong​/get_profile_by_id​/{id}
+​/garyeong​/garyeong​/get_profiles
+​/garyeong​/garyeong​/get_profiles_count
+​/garyeong​/garyeong​/get_report_by_id​/{id}
+​/garyeong​/garyeong​/get_report_by_target​/{target}
+​/garyeong​/garyeong​/get_reports_by_tags​/{tags}
+​/garyeong​/garyeong​/get_reports_count
