@@ -1,3 +1,6 @@
+./garyeongd tx garyeong set-profile --chain-id "garyeong_x2" --from alice -y
+./garyeongd tx garyeong set-profile --chain-id "garyeong_x2" --from bob -y
+
 ./garyeongd tx garyeong upload-report ipsi none example "univ,test" --chain-id "garyeong_x2" --from alice  -y
 ./garyeongd tx garyeong upload-report ipsi2 none example "univ,test" --chain-id "garyeong_x2" --from alice  -y
 ./garyeongd tx garyeong upload-report Pjt none example "programer, student" --chain-id "garyeong_x2" --from alice  -y
@@ -10,8 +13,6 @@
 ./garyeongd tx garyeong create-comment 0 "World, Hello" --chain-id "garyeong_x2" --from bob -y
 ./garyeongd tx garyeong create-comment 1 "Hello, World2" --chain-id "garyeong_x2" --from alice  -y
 
-./garyeongd tx garyeong set-profile --chain-id "garyeong_x2" --from alice -y
-./garyeongd tx garyeong set-profile --chain-id "garyeong_x2" --from bob -y
 
 ./garyeongd tx garyeong send-recommend 0 --chain-id "garyeong_x2" --from alice -y
 ./garyeongd tx garyeong send-recommend 4 --chain-id "garyeong_x2" --from alice -y
