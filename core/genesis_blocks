@@ -1,6 +1,10 @@
-./garyeongd tx garyeong upload-report ipsi none example "univ,test" --chain-id "garyeong_x2" --from a lice  -y
+./garyeongd tx garyeong upload-report ipsi none example "univ,test" --chain-id "garyeong_x2" --from alice  -y
 ./garyeongd tx garyeong upload-report ipsi2 none example "univ,test" --chain-id "garyeong_x2" --from alice  -y
 ./garyeongd tx garyeong upload-report Pjt none example "programer, student" --chain-id "garyeong_x2" --from alice  -y
+./garyeongd tx garyeong upload-report test none exampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexample "programer, student, univ, test" --chain-id "garyeong_x2" --from alice  -y
+./garyeongd tx garyeong upload-report test2 https://example.com/ "example example example example example example example example example example example example" "programer, student, univ, test" --chain-id "garyeong_x2" --from alice  -y
+./garyeongd tx garyeong upload-report test3 none exampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexampleexample "programer, student, univ, test" --chain-id "garyeong_x2" --from alice  -y
+./garyeongd tx garyeong upload-report test4 https://example.com/ "example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example example" "programer, student, univ, test" --chain-id "garyeong_x2" --from alice  -y
 
 ./garyeongd tx garyeong create-comment 0 "Hello, World" --chain-id "garyeong_x2" --from alice -y
 ./garyeongd tx garyeong create-comment 0 "World, Hello" --chain-id "garyeong_x2" --from bob -y
@@ -10,6 +14,8 @@
 ./garyeongd tx garyeong set-profile --chain-id "garyeong_x2" --from bob -y
 
 ./garyeongd tx garyeong send-recommend 0 --chain-id "garyeong_x2" --from alice -y
+./garyeongd tx garyeong send-recommend 4 --chain-id "garyeong_x2" --from alice -y
+./garyeongd tx garyeong send-recommend 4 --chain-id "garyeong_x2" --from bob -y
 
 
 ./garyeongd q garyeong get-all-reports
@@ -20,6 +26,6 @@
 ./garyeongd q garyeong get-comments-by-report-id 0
 ./garyeongd q garyeong get-comment-by-id 2
 ./garyeongd q garyeong get-profiles
-./garyeongd q garyeong get-profile-count
+./garyeongd q garyeong get-profiles-count
 ./garyeongd q garyeong get-profile-by-id 0
 ./garyeongd q garyeong get-profile-by-address _
