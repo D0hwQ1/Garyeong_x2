@@ -14,18 +14,6 @@ const walletSlice: any = createSlice({
     },
 })
 
-const txSlice: any = createSlice({
-    name: "tx",
-    initialState: {
-        client: "null",
-    },
-    reducers: {
-        setTx: (state, action) => {
-            state.client = action.payload
-        },
-    },
-})
-
 const persistedReducer = persistReducer(
     {
         key: "root",
@@ -33,7 +21,6 @@ const persistedReducer = persistReducer(
     },
     combineReducers({
         wallet: walletSlice.reducer,
-        tx: txSlice.reducer,
     }),
 )
 
@@ -47,4 +34,4 @@ const store = configureStore({
 
 const persistor = persistStore(store)
 
-export { store, persistor, walletSlice, txSlice }
+export { store, persistor, walletSlice }
