@@ -35,7 +35,7 @@ export default function Card({ title, link, content, date, tags, cnt, id }: any)
                 <p>
                     추천 수: {cnt}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div
-                        style={{ display: "inline-block", cursor: "pointer" }}
+                        style={{ display: "inline-block", cursor: "pointer", border: "1px solid black", borderRadius: "10px", padding: "5px" }}
                         onClick={async () => {
                             try {
                                 var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data;
