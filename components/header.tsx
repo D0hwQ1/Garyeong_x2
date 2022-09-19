@@ -75,8 +75,10 @@ export default function Header() {
                 </div>
 
                 <div className="header__search">
-                    <Nlink href={`/search?${search}`}>
-                        <FontAwesomeIcon style={{ background: "transparent", width: "15px" }} icon={faSearch} />
+                    <Nlink href={`/search`}>
+                        <a onClick={() => location.assign(`/search?${search}`)}>
+                            <FontAwesomeIcon style={{ background: "transparent", width: "15px" }} icon={faSearch} />
+                        </a>
                     </Nlink>
                     <input
                         type="text"
