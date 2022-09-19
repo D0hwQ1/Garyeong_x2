@@ -13,14 +13,15 @@ export default function Search() {
 
     useEffect(() => {
         ;(async () => {
-            const q = location.search.slice(1)
-            if (q.includes("https")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_site/${q.slice(8)}`)).data.report)
-            else if (q.includes(".")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_site/${q}`)).data.report)
-            else if (q.includes(",")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
-            else {
-                setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_target/${q}`)).data.report)
-                if (!data) {
-                    setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
+            if (!data) {
+                const q = location.search.slice(1)
+                if (q.includes(".")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_site/${q}`)).data.report)
+                else if (q.includes(",")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
+                else {
+                    setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_target/${q}`)).data.report)
+                    if (!data) {
+                        setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
+                    }
                 }
             }
         })()
