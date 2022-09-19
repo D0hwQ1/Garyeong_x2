@@ -3,6 +3,7 @@ package keeper
 import (
 	"encoding/binary"
 	"errors"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,7 +11,7 @@ import (
 	"garyeong/x/garyeong/types"
 )
 
-func (k Keeper) AddComment(ctx sdk.Context, comment types.Comment) uint64 {
+func (k Keeper) AddComment(ctx sdk.Context, address string, comment types.Comment) error {
 	count := k.GetCommentCount(ctx)
 
 	comment.Id = count
@@ -25,7 +26,22 @@ func (k Keeper) AddComment(ctx sdk.Context, comment types.Comment) uint64 {
 	store.Set(byteKey, appendedValue)
 
 	k.SetCommentCount(ctx, count+1)
-	return count
+
+	profile, err := k.GetSingleProfileByAddress(ctx, address)
+	if err != nil {
+		return err
+	}
+
+	if time.Now().UnixMilli() >= profile.LastActivityAt+1000*60*60*3 {
+		profile.Activity += 1
+		profile.LastActivityAt = time.Now().UnixMilli() 
+	}
+
+	if err := k.UpdateProfile(ctx, profile); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (k Keeper) GetEveryComment(ctx sdk.Context) ([]*types.Comment, error) {

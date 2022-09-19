@@ -21,7 +21,7 @@ func (k msgServer) UploadReport(goCtx context.Context, msg *types.MsgUploadRepor
 		CreatedAt:   time.Now().UnixMilli(),
 	}
 
-	id, err := k.AddReport(ctx, report)
+	id, err := k.AddReport(ctx, msg.Creator, report)
 	if err != nil {
 		return nil, err
 	}

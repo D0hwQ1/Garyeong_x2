@@ -19,7 +19,10 @@ func (k msgServer) CreateComment(goCtx context.Context, msg *types.MsgCreateComm
 		CreatedAt: time.Now().UnixMilli(),
 	}
 
-	k.AddComment(ctx, comment)
+	err := k.AddComment(ctx, msg.Creator, comment)
+	if err != nil {
+		return nil, err
+	}
 
 	return &types.MsgCreateCommentResponse{}, nil
 }

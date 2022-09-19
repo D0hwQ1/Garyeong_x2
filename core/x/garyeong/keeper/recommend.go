@@ -25,11 +25,11 @@ func (k Keeper) AddRecommend(ctx sdk.Context, address string, reportId uint64) e
 			return errors.New("already participated")
 		}
 	}
-	// k.bankKeeper.AddCoins(ctx, profile.Address, sdk.NewCoins(sdk.NewCoin("save", sdk.NewInt(100000))))
+	// k.BankKeeper.AddCoins(ctx, profile.Address, sdk.NewCoins(sdk.NewCoin("save", sdk.NewInt(100000))))
 
 	if time.Now().UnixMilli() >= profile.LastActivityAt+1000*60*60*3 {
 		profile.Activity += 1
-		profile.LastActivityAt = time.Now().UnixMilli()
+		profile.LastActivityAt = time.Now().UnixMilli() 
 		// k.bankKeeper.AddCoins(ctx, profile.Address, sdk.NewCoins(sdk.NewCoin("save", sdk.NewInt(100000))))
 	}
 	profile.ParticipationRecommend = append(profile.ParticipationRecommend, reportId)

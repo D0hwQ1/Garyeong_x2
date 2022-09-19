@@ -14,6 +14,7 @@ func (k msgServer) SetProfile(goCtx context.Context, msg *types.MsgSetProfile) (
 
 	var profile = types.Profile{
 		Address:        msg.Creator,
+		Activity:	1,
 		LastActivityAt: time.Now().UnixMilli(),
 	}
 
