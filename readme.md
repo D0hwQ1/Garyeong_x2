@@ -18,32 +18,22 @@ ignite chain serve
 
 ## RPCs
 
--   UploadReport(report)
--   CreateComment(reportId, message)
--   SetProfile(profile)
--   SendRecommend(reportId)
-
--   GetAllReports()
--   GetReportsCount()
--   GetReportById(id)
--   GetReportByTarget(target)
--   GetReportsByTags(tags)
--   GetReportBySite(site)
--   GetCommentsByReportId(id)
--   GetCommentById(id)
--   GetProfiles()
--   GetProfileCount()
--   GetProfileById(id)
--   GetProfileByAddress(address)
-
-​/garyeong​/garyeong​/get_all_reports
-​/garyeong​/garyeong​/get_comment_by_id​/{id}
-​/garyeong​/garyeong​/get_comments_by_report_id​/{reportId}
-​/garyeong​/garyeong​/get_profile_by_address​/{address}
-​/garyeong​/garyeong​/get_profile_by_id​/{id}
-​/garyeong​/garyeong​/get_profiles
-​/garyeong​/garyeong​/get_profiles_count
-​/garyeong​/garyeong​/get_report_by_id​/{id}
-​/garyeong​/garyeong​/get_report_by_target​/{target}
-​/garyeong​/garyeong​/get_reports_by_tags​/{tags}
-​/garyeong​/garyeong​/get_reports_count
+|             RPC List             | REST API                                                    |
+| :------------------------------: | :---------------------------------------------------------- |
+|       UploadReport(report)       | null                                                        |
+| CreateComment(reportId, message) | null                                                        |
+|       SetProfile(profile)        | null                                                        |
+|     SendRecommend(reportId)      | null                                                        |
+|                                  |                                                             |
+|         GetAllReports()          | /garyeong​/garyeong​/get_all_reports                        |
+|        GetReportsCount()         | ​/garyeong​/garyeong​/get_reports_count                     |
+|        GetReportById(id)         | /garyeong​/garyeong​/get_report_by_id​/{id}                 |
+|    GetReportByTarget(target)     | ​/garyeong​/garyeong​/get_report_by_target​/{target}        |
+|      GetReportsByTags(tags)      | ​/garyeong​/garyeong​/get_reports_by_tags​/{tags}           |
+|      GetReportBySite(site)       | ​/garyeong​/garyeong​/get_report_by_site                    |
+|    GetCommentsByReportId(id)     | ​/garyeong​/garyeong​/get_comments_by_report_id​/{reportId} |
+|        GetCommentById(id)        | ​/garyeong​/garyeong​/get_comment_by_id​/{id}               |
+|          GetProfiles()           | ​/garyeong​/garyeong​/get_profiles                          |
+|        GetProfileCount()         | ​/garyeong​/garyeong​/get_profiles_count                    |
+|        GetProfileById(id)        | ​/garyeong​/garyeong​/get_profile_by_id​/{id}               |
+|   GetProfileByAddress(address)   | ​/garyeong​/garyeong​/get_profile_by_address​/{address}     |
