@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import axios from "axios"
 import { chainInfo } from "../assets/chain"
@@ -25,7 +25,6 @@ export default function Card({ title, link, content, date, tags, cnt, id, addr, 
                             else {
                                 try {
                                     var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data
-                                    console.log(tx)
                                     res = await tx.signAndBroadcast([
                                         tx.msgSendRecommend({
                                             creator: addr,
