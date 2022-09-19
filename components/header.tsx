@@ -1,48 +1,47 @@
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-const Link: any = require("next/link");
-import axios from "axios";
-
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faUser, faSearch } from "@fortawesome/free-solid-svg-icons";
-
-import { txClient } from "../assets/generated";
-import { chainInfo } from "../assets/chain";
+import React, { useState, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
+const Nlink = Link as any
+import axios from "axios"
+import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars, faUser, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { useSelector, useDispatch } from "react-redux"
+import { walletSlice } from "../redux/store"
+import { chainInfo } from "../assets/chain"
 
 export default function Header() {
-    const [open, setOpen] = useState(false);
-    const [isToggled, setIsToggled] = useState<boolean>(false);
-    const [userToggled, setUserToggled] = useState(false);
-    const [login, setLogin] = useState(false);
+    const [open, setOpen] = useState(false)
+    const [isToggled, setIsToggled] = useState<boolean>(false)
+    const [userToggled, setUserToggled] = useState(false)
+    const dispatch = useDispatch()
+    const addr = useSelector((state: any) => state.wallet.addr)
 
-    const [search, setSearch] = useState<string>();
-    const [title, setTitle] = useState<string>();
-    const [desc, setDesc] = useState<string>();
-    const [img, setImg] = useState<File>();
-    const [email, setEmail] = useState<string>();
+    const [search, setSearch] = useState<string>()
+    const [title, setTitle] = useState<string>()
+    const [desc, setDesc] = useState<string>()
+    const [img, setImg] = useState<File>()
+    const [email, setEmail] = useState<string>()
 
-    const [addr, setAddr] = useState<string>();
-    const [activity, setActivity] = useState<number>(0);
-    const [tx, setTx] = useState<any>();
-    const [cnt, setCnt] = useState<any>();
-
-    useEffect(() => {
-        (async () => {
-            setCnt((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_count`)).data.count);
-        })();
-    }, []);
+    const [activity, setActivity] = useState<number>(0)
+    const [cnt, setCnt] = useState<any>()
 
     useEffect(() => {
-        (async () => {
+        ;(async () => {
+            setCnt((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_count`)).data.count)
+        })()
+    }, [])
+
+    useEffect(() => {
+        ;(async () => {
             try {
-                var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data.profile.activity;
-                setActivity(res);
+                var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data.profile.activity
+                setActivity(res)
             } catch (e) {
-                setActivity(0);
+                setActivity(0)
             }
-        })();
-    }, [addr]);
+        })()
+    }, [addr])
 
     return (
         <>
@@ -50,35 +49,35 @@ export default function Header() {
                 <div
                     className="toggle"
                     onClick={() => {
-                        setUserToggled(false);
-                        setIsToggled(!isToggled);
+                        setUserToggled(false)
+                        setIsToggled(!isToggled)
                     }}
                 >
                     <FontAwesomeIcon icon={faBars} />
                 </div>
 
                 <div className="logo">
-                    <Link href={"/"}>
+                    <Nlink href={"/"}>
                         <a>
                             <Image src="/logo.png" width="45px" height="45px" />
                         </a>
-                    </Link>
+                    </Nlink>
                 </div>
 
                 <div
                     className="user"
                     onClick={() => {
-                        setIsToggled(false);
-                        setUserToggled(!userToggled);
+                        setIsToggled(false)
+                        setUserToggled(!userToggled)
                     }}
                 >
                     <FontAwesomeIcon icon={faUser} />
                 </div>
 
                 <div className="header__search">
-                    <Link href={`/search?${search}`}>
+                    <Nlink href={`/search?${search}`}>
                         <FontAwesomeIcon style={{ background: "transparent", width: "15px" }} icon={faSearch} />
-                    </Link>
+                    </Nlink>
                     <input
                         type="text"
                         value={search}
@@ -89,25 +88,25 @@ export default function Header() {
 
                 <ul className="header__menulist">
                     <li>
-                        <Link href="/rank">
+                        <Nlink href="/rank">
                             <a>Ranking</a>
-                        </Link>
+                        </Nlink>
                     </li>
                     <li>
-                        <Link href="/report">
+                        <Nlink href="/report">
                             <a>Report</a>
-                        </Link>
+                        </Nlink>
                     </li>
                     <li>
-                        <Link href="/ads">
+                        <Nlink href="/ads">
                             <a>Ads</a>
-                        </Link>
+                        </Nlink>
                     </li>
                     <li
                         className="request"
                         onClick={() => {
-                            setIsToggled(false);
-                            setOpen(true);
+                            setIsToggled(false)
+                            setOpen(!open)
                         }}
                     >
                         <a>Upload_Ad</a>
@@ -120,23 +119,20 @@ export default function Header() {
                         style={{ cursor: addr ? "default" : "pointer" }}
                         onClick={async () => {
                             if (!window.keplr) {
-                                throw new Error("Keplr is not available");
+                                if (confirm("Keplr가 설치되어 있지 않습니다.\n설치하시겠습니까?")) {
+                                    location.assign("https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap")
+                                }
+                            } else {
+                                await window.keplr.experimentalSuggestChain(chainInfo)
+                                await window.keplr.enable(chainInfo.chainId)
+
+                                const signer = window.keplr.getOfflineSigner!(chainInfo.chainId)
+
+                                dispatch(walletSlice.actions.setWallet((await signer.getAccounts())[0].address))
                             }
-
-                            await window.keplr.experimentalSuggestChain(chainInfo);
-                            await window.keplr.enable(chainInfo.chainId);
-
-                            const signer = window.keplr.getOfflineSigner!(chainInfo.chainId);
-                            setAddr((await signer.getAccounts())[0].address);
-                            setTx(
-                                await txClient(signer, {
-                                    addr: chainInfo.rpc,
-                                }),
-                            );
-                            setLogin(true);
                         }}
                     >
-                        {login ? "활동 수:" + activity : "Login"}
+                        {addr != "0xasdf" ? "활동 수:" + activity : "Login"}
                     </li>
                 </ul>
             </Base>
@@ -147,14 +143,14 @@ export default function Header() {
                         <input
                             value={title}
                             onChange={(e) => {
-                                setTitle(e.target.value);
+                                setTitle(e.target.value)
                             }}
                         />
                         <p>Desc</p>
                         <textarea
                             value={desc}
                             onChange={(e) => {
-                                setDesc(e.target.value);
+                                setDesc(e.target.value)
                             }}
                         />
                         <p>Image</p>
@@ -162,31 +158,31 @@ export default function Header() {
                             type="file"
                             accept="image/*"
                             onChange={(e) => {
-                                setImg(e.target.files[0]);
+                                setImg(e.target.files[0])
                             }}
                         />
                         <p>E-mail</p>
                         <input
                             value={email}
                             onChange={(e) => {
-                                setEmail(e.target.value);
+                                setEmail(e.target.value)
                             }}
                         ></input>
                         <button
                             onClick={async () => {
                                 if (title && desc && img && email) {
-                                    const Img = new FormData();
-                                    Img.append("file", img);
+                                    const Img = new FormData()
+                                    Img.append("file", img)
                                     await axios.post("/api/upload", {
                                         title,
                                         desc,
                                         email,
-                                    });
-                                    await axios.post(`/api/upload_img?directory=${email}`, Img);
-                                    alert("전송이 완료되었습니다.");
-                                    setOpen(false);
+                                    })
+                                    await axios.post(`/api/upload_img?directory=${email}`, Img)
+                                    alert("전송이 완료되었습니다.")
+                                    setOpen(false)
                                 } else {
-                                    alert("값을 모두 입력해주세요.");
+                                    alert("값을 모두 입력해주세요.")
                                 }
                             }}
                         >
@@ -196,7 +192,7 @@ export default function Header() {
                 </Box>
             )}
         </>
-    );
+    )
 }
 
 const Base: any = styled.div<{ isToggled; userToggled: boolean }>`
@@ -330,7 +326,7 @@ const Base: any = styled.div<{ isToggled; userToggled: boolean }>`
             display: block;
         }
     }
-`;
+`
 
 const Box: any = styled.div`
     width: 100vw;
@@ -371,4 +367,4 @@ const Box: any = styled.div`
             margin: 2rem 0;
         }
     }
-`;
+`
