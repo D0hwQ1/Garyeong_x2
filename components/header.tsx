@@ -183,8 +183,8 @@ export default function Header() {
                                         email,
                                     });
                                     await axios.post(`/api/upload_img?directory=${email}`, Img);
-                                    setOpen(false);
                                     alert("전송이 완료되었습니다.");
+                                    setOpen(false);
                                 } else {
                                     alert("값을 모두 입력해주세요.");
                                 }
@@ -253,7 +253,7 @@ const Base = styled.div`
     }
 
     .header__right {
-        width: 4rem;
+        width: 5rem;
         list-style: none;
         display: flex;
         margin: 0 4rem;
