@@ -18,9 +18,10 @@ export default function Search() {
             else if (q.includes(".")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_site/${q}`)).data.report)
             else if (q.includes(",")) setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
             else {
-                var tmp = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report
-                tmp.concat((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_target/${q}`)).data.report)
-                setData(tmp[0] != null ? tmp : "")
+                setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_report_by_target/${q}`)).data.report)
+                if (!data) {
+                    setData((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_by_tags/${q}`)).data.report)
+                }
             }
         })()
     }, [])
