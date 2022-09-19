@@ -28,6 +28,7 @@ ignite chain serve
 -   GetReportById(id)
 -   GetReportByTarget(target)
 -   GetReportsByTags(tags)
+-   GetReportBySite(site)
 -   GetCommentsByReportId(id)
 -   GetCommentById(id)
 -   GetProfiles()

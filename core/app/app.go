@@ -394,8 +394,6 @@ func New(
 		keys[garyeongmoduletypes.StoreKey],
 		keys[garyeongmoduletypes.MemStoreKey],
 		app.GetSubspace(garyeongmoduletypes.ModuleName),
-
-		app.BankKeeper,
 	)
 	garyeongModule := garyeongmodule.NewAppModule(appCodec, app.GaryeongKeeper, app.AccountKeeper, app.BankKeeper)
 

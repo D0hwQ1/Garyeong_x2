@@ -71,6 +71,11 @@ service Query {
 		option (google.api.http).get = "/garyeong/garyeong/get_profile_by_address/{address}";
 	}
 
+// Queries a list of GetReportBySite items.
+	rpc GetReportBySite(QueryGetReportBySiteRequest) returns (QueryGetReportBySiteResponse) {
+		option (google.api.http).get = "/garyeong/garyeong/get_report_by_site/{site}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -171,6 +176,14 @@ message QueryGetProfileByAddressRequest {
 
 message QueryGetProfileByAddressResponse {
   Profile profile = 1;
+}
+
+message QueryGetReportBySiteRequest {
+  string site = 1;
+}
+
+message QueryGetReportBySiteResponse {
+  repeated Report report = 1;
 }
 
 // this line is used by starport scaffolding # 3

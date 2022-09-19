@@ -3,6 +3,7 @@ package keeper
 import (
 	"encoding/binary"
 	"errors"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -11,7 +12,7 @@ import (
 	"garyeong/x/garyeong/types"
 )
 
-func (k Keeper) AddReport(ctx sdk.Context, report types.Report) (uint64, error) {
+func (k Keeper) AddReport(ctx sdk.Context, address string, report types.Report) (uint64, error) {
 	count := k.GetReportCount(ctx)
 
 	report.Id = count
@@ -37,6 +38,21 @@ func (k Keeper) AddReport(ctx sdk.Context, report types.Report) (uint64, error) 
 	store.Set(byteKey, appendedValue)
 
 	k.SetReportCount(ctx, count+1)
+
+	profile, err := k.GetSingleProfileByAddress(ctx, address)
+	if err != nil {
+		return 0, err
+	}
+
+	if time.Now().UnixMilli() >= profile.LastActivityAt+1000*60*60*3 {
+		profile.Activity += 1
+		profile.LastActivityAt = time.Now().UnixMilli() 
+	}
+
+	if err := k.UpdateProfile(ctx, profile); err != nil {
+		return 0, err
+	}
+
 	return count, nil
 }
 
@@ -116,6 +132,22 @@ func (k Keeper) GetEveryReportByTags(ctx sdk.Context, tags []string) ([]*types.R
 		}
 
 		if check == len(tags) {
+			result = append(result, report)
+		}
+	}
+
+	return result, nil
+}
+
+func (k Keeper) GetEveryReportBySite(ctx sdk.Context, site string) ([]*types.Report, error) {
+	reports, err := k.GetEveryReport(ctx)
+	if err != nil {
+		return nil, errors.New("internal error")
+	}
+
+	var result []*types.Report
+	for _, report := range reports {
+		if fuzzy.Match(site, report.Link) {
 			result = append(result, report)
 		}
 	}
