@@ -173,16 +173,18 @@ export default function Header() {
                         <button
                             onClick={async () => {
                                 if (title && desc && img && email) {
-                                    const Img = new FormData()
-                                    Img.append("file", img)
-                                    await axios.post("/api/upload", {
-                                        title,
-                                        desc,
-                                        email,
-                                    })
-                                    await axios.post(`/api/upload_img?directory=${email}`, Img)
+                                    const form = new FormData()
+                                    form.append("file", img)
+                                    form.append("json", JSON.stringify({ title, desc, email }))
+                                    await axios.post(`/api/upload`, form)
+
                                     alert("전송이 완료되었습니다.")
                                     setOpen(false)
+
+                                    setTitle("")
+                                    setDesc("")
+                                    setImg(null)
+                                    setEmail("")
                                 } else {
                                     alert("값을 모두 입력해주세요.")
                                 }
