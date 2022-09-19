@@ -1,20 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { chainInfo } from "../assets/chain";
-import axios from "axios";
-import Card from "../components/card";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import Card from "../components/card"
+import styled from "styled-components"
+import { useSelector } from "react-redux"
+import { chainInfo } from "../assets/chain"
+import { txClient } from "../assets/generated"
 
 export default function Rank() {
-    const [data, setData] = useState(null);
+    const addr = useSelector((state: any) => state.wallet.addr)
+    const [tx, setTx] = useState<any>(null)
+
+    const [data, setData] = useState(null)
+
     useEffect(() => {
-        (async () => {
-            var reports = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_all_reports`)).data.reports;
-            reports.sort((a, b) => b.recommendCount.localeCompare(a.recommendCount));
-            setData(reports);
-        })();
-    }, []);
+        ;(async () => {
+            var reports = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_all_reports`)).data.reports
+            reports.sort((a, b) => b.recommendCount.localeCompare(a.recommendCount))
+            setData(reports)
+        })()
+    }, [])
+
+    useEffect(() => {
+        ;(async () => {
+            if (addr != "0xasdf") {
+                const signer = window.keplr.getOfflineSigner!(chainInfo.chainId)
+                setTx(await txClient(signer, { addr: chainInfo.rpc }))
+            }
+        })()
+    }, [addr])
+
     if (!data) {
-        return "loading";
+        return "loading"
     } else {
         return (
             <Container>
@@ -28,20 +44,22 @@ export default function Rank() {
                             date={item.createdAt}
                             tags={item.tags}
                             cnt={item.recommendCount}
-                            id={idx}
+                            id={item.id}
+                            addr={addr}
+                            tx={tx}
                         ></Card>
-                    );
+                    )
                 })}
             </Container>
-        );
+        )
     }
 }
 
-const Container = styled.div`
+const Container: any = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     @media screen and (max-width: 800px) {
         justify-content: center;
     }
-`;
+`
