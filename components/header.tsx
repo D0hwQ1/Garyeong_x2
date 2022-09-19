@@ -24,21 +24,23 @@ export default function Header() {
     const [email, setEmail] = useState<string>()
 
     const [activity, setActivity] = useState<number>(0)
-    const [cnt, setCnt] = useState<any>()
+    const [cnt, setCnt] = useState<any>(0)
 
     useEffect(() => {
         ;(async () => {
-            setCnt((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_count`)).data.count)
+            if (cnt == 0) setCnt((await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_reports_count`)).data.count)
         })()
     }, [])
 
     useEffect(() => {
         ;(async () => {
-            try {
-                var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data.profile.activity
-                setActivity(res)
-            } catch (e) {
-                setActivity(0)
+            if (activity == 0) {
+                try {
+                    var res = (await axios.get(`${chainInfo.rest}/garyeong/garyeong/get_profile_by_address/${addr}`)).data.profile.activity
+                    setActivity(res)
+                } catch (e) {
+                    setActivity(0)
+                }
             }
         })()
     }, [addr])
@@ -75,11 +77,9 @@ export default function Header() {
                 </div>
 
                 <div className="header__search">
-                    <Nlink href={`/search`}>
-                        <a onClick={() => location.assign(`/search?${search}`)}>
-                            <FontAwesomeIcon style={{ background: "transparent", width: "15px" }} icon={faSearch} />
-                        </a>
-                    </Nlink>
+                    <a onClick={() => location.assign(`/search?${search}`)}>
+                        <FontAwesomeIcon style={{ background: "transparent", width: "15px" }} icon={faSearch} />
+                    </a>
                     <input
                         type="text"
                         value={search}
