@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+const Link: any = require("next/link");
 import axios from "axios";
 
 import styled from "styled-components";
@@ -12,7 +12,7 @@ import { chainInfo } from "../assets/chain";
 
 export default function Header() {
     const [open, setOpen] = useState(false);
-    const [isToggled, setIsToggled] = useState<any>(false);
+    const [isToggled, setIsToggled] = useState<boolean>(false);
     const [userToggled, setUserToggled] = useState(false);
     const [login, setLogin] = useState(false);
 
@@ -199,7 +199,7 @@ export default function Header() {
     );
 }
 
-const Base = styled.div`
+const Base: any = styled.div<{ isToggled; userToggled: boolean }>`
     max-width: 100vw;
     display: flex;
     justify-content: space-between;
@@ -332,7 +332,7 @@ const Base = styled.div`
     }
 `;
 
-const Box = styled.div`
+const Box: any = styled.div`
     width: 100vw;
     height: 900px;
     max-height: 200vh;

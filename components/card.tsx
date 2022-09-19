@@ -13,7 +13,7 @@ export default function Card({ title, link, content, date, tags, cnt, id }: any)
             setAddr((await signer.getAccounts())[0].address);
             setTx(
                 await txClient(signer, {
-                    addr: chainInfo.rpc,
+                    addr: chainInfo.rpc!,
                 }),
             );
         })();
@@ -73,7 +73,7 @@ export default function Card({ title, link, content, date, tags, cnt, id }: any)
     );
 }
 
-const Container = styled.div`
+const Container: any = styled.div`
     display: block;
     width: 300px;
     margin: 50px 80px;
@@ -87,13 +87,13 @@ const Container = styled.div`
     }
 `;
 
-const Title = styled.div`
+const Title: any = styled.div`
     text-align: center;
     line-height: 100px;
     font-size: 50px;
     height: 100px;
 `;
-const Detail = styled.div`
+const Detail: any = styled.div`
     font-size: 20px;
     a {
         color: black;

@@ -22,7 +22,7 @@ func CmdUploadReport() *cobra.Command {
 			argTarget := args[0]
 			argLink := args[1]
 			argDescription := args[2]
-			argTags := strings.Split(args[3], ",")
+			argTags := strings.Split(strings.Replace(args[3], " ", "", -1), ",")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
