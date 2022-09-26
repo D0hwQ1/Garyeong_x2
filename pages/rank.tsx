@@ -30,7 +30,9 @@ export default function Rank() {
     }, [addr])
 
     if (!data) {
-        return "loading"
+        return (
+            <div style={{ display: "flex", width: "100vw", height: "80vh", justifyContent: "center", alignItems: "center", fontSize: "2rem" }}>Loading...</div>
+        )
     } else {
         return (
             <Container>
