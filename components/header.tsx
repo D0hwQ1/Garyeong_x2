@@ -83,7 +83,7 @@ export default function Header() {
                     <input
                         type="text"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => setSearch(e.target.value.trim())}
                         placeholder="찾고자 하는 사이트 및 대상, 태그 등을 입력해주세요"
                     />
                 </div>
